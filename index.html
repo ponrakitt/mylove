@@ -919,289 +919,40 @@
             box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
         }
 
-        /* Page Lock Styles */
-        .page-lock-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .progress-bar-container {
             width: 100%;
-            height: 100%;
-            z-index: 99999;
-            background-color: #1a202c;
-            display: none;
-        }
-
-        .lock-content-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            margin: 25px 0;
             position: relative;
+            height: 30px;
+            display: flex;
+            align-items: center;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .lock-aurora-bg {
-            position: absolute;
-            width: 100%;
+        .progress-bar {
+            width: 0%;
             height: 100%;
-            mix-blend-mode: screen;
-            z-index: 1;
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            border-radius: 15px;
+            transition: width 0.5s ease-in-out;
         }
 
-        .lock-aurora-bg .aurora-shape {
+        .progress-label {
             position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.5;
-        }
-
-        .lock-aurora-bg .shape1 {
-            background: #764ba2;
-            width: 60vw; height: 60vw; top: -20%; left: -20%;
-            animation: moveAurora1 25s infinite alternate ease-in-out;
-        }
-
-        .lock-aurora-bg .shape2 {
-            background: #667eea;
-            width: 50vw; height: 50vw; bottom: -20%; right: -20%;
-            animation: moveAurora2 30s infinite alternate-reverse ease-in-out;
-        }
-
-        .lock-content {
-            text-align: center;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
             color: white;
-            z-index: 10;
-            padding: 20px;
-            animation: contentFadeIn 1s 0.5s ease-out forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        @keyframes contentFadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .lock-content h1 {
-            font-size: 2.8em;
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.4);
-        }
-
-        .lock-content p {
-            font-size: 1.2em;
-            line-height: 1.6;
-            margin: 0 auto 10px;
-            max-width: 550px;
-            opacity: 0.9;
-        }
-
-        .lock-content .instruction {
-            margin-top: 40px;
-            font-weight: 500;
-            font-size: 1.1em;
-        }
-
-        .lock-countdown {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-top: 20px;
-        }
-
-        .lock-time-unit {
-            display: flex;
-            flex-direction: column;
-            min-width: 120px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(5px);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-        }
-
-        .lock-time-unit span {
-            font-size: 4.5em;
-            font-weight: 700;
-            line-height: 1;
-            background: linear-gradient(135deg, #a29bfe, #ff7675);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 15px rgba(255, 118, 117, 0.3);
-        }
-
-        .lock-time-unit label {
-            font-size: 1em;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            opacity: 0.8;
-            margin-top: 10px;
-        }
-        
-        .main-content-wrapper {
-            display: contents;
-        }
-
-        body.page-is-locked .main-content-wrapper {
-            display: none;
-        }
-        
-        @media (max-width: 768px) {
-            .main-title {
-                font-size: 2.2em;
-            }
-            
-            .love-card {
-                padding: 0;
-                border-radius: 24px;
-            }
-            
-            .step {
-                padding: 30px 25px;
-            }
-            
-            .time-grid {
-                grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-                gap: 15px;
-            }
-            
-            .time-unit {
-                padding: 20px 10px;
-            }
-            
-            .time-number {
-                font-size: 1.8em;
-            }
-            
-            .time-label {
-                font-size: 0.9em;
-            }
-            
-            .share-title {
-                font-size: 1.8em;
-            }
-            
-            .share-days {
-                font-size: 2.8em;
-            }
-            
-            .special-button {
-                padding: 15px 25px;
-                font-size: 1em;
-                margin: 8px 4px;
-            }
-            
-            .love-message {
-                font-size: 1.1em;
-            }
-            
-            .month-indicator {
-                top: 10px;
-                right: 10px;
-                font-size: 0.8em;
-                padding: 8px 12px;
-            }
-            
-            .theme-change-btn {
-                bottom: 10px;
-                right: 10px;
-                padding: 12px 16px;
-                font-size: 0.8em;
-            }
-
-            .lock-content h1 {
-                font-size: 2.2em;
-            }
-            .lock-time-unit {
-                min-width: 90px;
-                padding: 15px;
-            }
-            .lock-time-unit span {
-                font-size: 3em;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .love-card {
-                padding: 0;
-            }
-            
-            .step {
-                padding: 25px 20px;
-            }
-            
-            .main-title {
-                font-size: 1.9em;
-            }
-            
-            .time-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-            
-            .special-button {
-                display: block;
-                width: 100%;
-                margin: 8px 0;
-            }
-
-            .lock-content h1 {
-                font-size: 1.9em;
-            }
-            .lock-content p {
-                font-size: 1em;
-            }
-            .lock-countdown {
-                gap: 10px;
-            }
-            .lock-time-unit {
-                min-width: 80px;
-                padding: 10px;
-                border-radius: 15px;
-            }
-            .lock-time-unit span {
-                font-size: 2.5em;
-            }
-            .lock-time-unit label {
-                font-size: 0.8em;
-            }
+            font-weight: 600;
+            font-size: 0.9em;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.4);
         }
     </style>
 </head>
 <body id="bodyElement">
-    <div id="pageLockOverlay" class="page-lock-overlay">
-        <div class="lock-content-wrapper">
-            <div class="lock-aurora-bg">
-                <div class="aurora-shape shape1"></div>
-                <div class="aurora-shape shape2"></div>
-            </div>
-            <div class="lock-content">
-                <h1>ถึงน้องเพลง...คนพิเศษ 🤫</h1>
-                <p>กำลังแอบเข้ามาดูอยู่ใช่มั้ยล่ะ? แต่ว่านะ...<br>ของขวัญชิ้นนี้ยังไม่ถึงเวลาเปิดหรอกนะ</p>
-                <p class="instruction">อดใจรออีกนิด แล้วกลับมาใหม่ในอีก</p>
-                <div class="lock-countdown">
-                    <div class="lock-time-unit">
-                        <span id="lock-hours">0</span>
-                        <label>ชั่วโมง</label>
-                    </div>
-                    <div class="lock-time-unit">
-                        <span id="lock-minutes">00</span>
-                        <label>นาที</label>
-                    </div>
-                    <div class="lock-time-unit">
-                        <span id="lock-seconds">00</span>
-                        <label>วินาที</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="main-content-wrapper">
     <div class="aurora-bg">
         <div class="aurora-shape shape1"></div>
         <div class="aurora-shape shape2"></div>
@@ -1306,8 +1057,14 @@
                     <button class="special-button" onclick="goToStep(1)">
                         กลับดูเวลา
                     </button>
-                    <button class="special-button" onclick="goToStep(3)">
-                        ดูข้อความพิเศษ
+                    <button class="special-button" onclick="goToStep(2)">
+                        แชร์เป็นรูป
+                    </button>
+                     <button class="special-button" onclick="checkMemoryLaneAccess()">
+                        ดูความทรงจำ
+                    </button>
+                    <button class="special-button" onclick="restartJourney()">
+                        เริ่มต้นใหม่
                     </button>
                 </div>
                 
@@ -1365,13 +1122,19 @@
         </div>
     </div>
     
-        <div id="lockPopup" class="popup-overlay" onclick="hideLockedPopup()">
+        <div id="lockPopup" class="popup-overlay" onclick="hideDevelopmentPopup()">
             <div class="popup-content" onclick="event.stopPropagation()">
-                <button class="popup-close" onclick="hideLockedPopup()">&times;</button>
-                <h2>🔒 ยังไม่ถึงเวลาปลดล็อก</h2>
-                <p>ความทรงจำของเราจะถูกเปิดเผยเมื่อครบรอบ 1 ปี</p>
+                <button class="popup-close" onclick="hideDevelopmentPopup()">&times;</button>
+                <h2>🚧 อยู่ในระหว่างการพัฒนา 🚧</h2>
+                <p>ส่วนนี้กำลังพัฒนาโดยโอ๊ค และจะพร้อมใช้งานในวันที่ 23 มกราคม 2026 นะครับ</p>
+                
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="devProgressBar"></div>
+                    <span class="progress-label" id="devProgressLabel">0%</span>
+                </div>
+
                 <div class="countdown-timer">
-                    <p>จะปลดล็อกในอีก</p>
+                    <p>เหลือเวลาอีก</p>
                     <div class="popup-time-grid">
                         <div class="popup-time-unit">
                             <div class="popup-time-number" id="countdown-days">0</div>
@@ -1391,10 +1154,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="popup-actions">
-                    <button class="calendar-btn" onclick="saveToCalendar()">🗓️ บันทึกลงในปฏิทิน</button>
-                </div>
-                <p class="popup-footer">แล้วกลับมาดูใหม่นะ!</p>
+                <p class="popup-footer">อดใจรอกันหน่อยนะ!</p>
             </div>
         </div>
     
@@ -1685,6 +1445,68 @@
             ctx.restore();
         }
 
+        function getAnniversaryType() {
+            const now = new Date();
+            
+            const checkDate = (date) => {
+                // Not an anniversary on the same day as start
+                if (date.getFullYear() === startDate.getFullYear() &&
+                    date.getMonth() === startDate.getMonth() &&
+                    date.getDate() === startDate.getDate()) {
+                    return 0; // Type 0: No anniversary
+                }
+
+                // Check if it's the anniversary day of the month
+                if (date.getDate() !== startDate.getDate()) {
+                    return 0; // Not the right day
+                }
+
+                // It is the anniversary day, check if it's an annual one.
+                if (date.getMonth() === startDate.getMonth()) {
+                    return 2; // Type 2: Annual anniversary
+                }
+                
+                return 1; // Type 1: Monthly anniversary
+            };
+
+            // Check for today
+            let anniversaryType = checkDate(now);
+            if (anniversaryType > 0) {
+                return anniversaryType;
+            }
+
+            // If not today, check for yesterday (to make it last 2 days)
+            const yesterday = new Date();
+            yesterday.setDate(now.getDate() - 1);
+            anniversaryType = checkDate(yesterday);
+            
+            return anniversaryType;
+        }
+
+        function drawConfetti(ctx) {
+            const colors = ['#f1c40f', '#e74c3c', '#3498db', '#2ecc71', '#9b59b6', '#e67e22', '#1abc9c'];
+            for (let i = 0; i < 200; i++) {
+                const x = Math.random() * ctx.canvas.width;
+                const y = Math.random() * ctx.canvas.height;
+                const size = Math.random() * 10 + 5;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                ctx.save();
+                ctx.globalAlpha = Math.random() * 0.5 + 0.5;
+                ctx.fillStyle = color;
+                ctx.translate(x, y);
+                ctx.rotate(Math.random() * Math.PI * 2);
+                if (Math.random() > 0.5) {
+                    ctx.fillRect(-size / 2, -size / 2, size, size/2);
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.restore();
+            }
+        }
+
         // ดาวน์โหลดรูป
         function downloadImage() {
             const canvas = document.getElementById('hiddenCanvas');
@@ -1752,39 +1574,122 @@
             ctx.shadowColor = 'transparent';
 
             const time = calculateTimeDifference();
-            const daysText = time.totalDays.toString();
-            ctx.font = 'bold 170px Arial, sans-serif';
-            
-            const numberGradient = ctx.createLinearGradient(0, 180, 0, 320);
-            numberGradient.addColorStop(0, '#FFFFFF');
-            numberGradient.addColorStop(0.5, '#ffd700');
-            numberGradient.addColorStop(1, '#ffc400');
-            
-            ctx.fillStyle = numberGradient;
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-            ctx.shadowBlur = 20;
-            ctx.shadowOffsetY = 8;
-            ctx.fillText(daysText, canvas.width / 2, 260);
-            
-            ctx.font = 'bold 45px "Noto Sans Thai", Arial, sans-serif';
-            ctx.fillStyle = '#ffffff';
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
-            ctx.shadowBlur = 10;
-            ctx.shadowOffsetY = 2;
-            ctx.fillText('วันแล้วนะ', canvas.width / 2, 360);
-            
-            ctx.shadowColor = 'transparent';
-            ctx.font = '28px "Noto Sans Thai", Arial, sans-serif';
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-            const now = new Date();
-            const dateStr = `23.01.2025 - ${now.getDate()}.${now.getMonth() + 1}.${now.getFullYear()}`;
-            ctx.fillText(dateStr, canvas.width / 2, 430);
+            const anniversaryType = getAnniversaryType();
 
-            drawSparkle(ctx, 100, 200, 15);
-            drawSparkle(ctx, 720, 150, 20);
-            drawSparkle(ctx, 680, 480, 12);
-            drawSparkle(ctx, 120, 450, 18);
-            drawSparkle(ctx, 200, 80, 10);
+            if (anniversaryType > 0) {
+                drawConfetti(ctx);
+                
+                const now = new Date();
+                let monthsPassed = (now.getFullYear() - startDate.getFullYear()) * 12 + (now.getMonth() - startDate.getMonth());
+                if (now.getDate() < startDate.getDate()) {
+                     monthsPassed--;
+                }
+
+                if (anniversaryType === 2) { // Annual
+                    ctx.font = 'bold 70px "Noto Sans Thai", Arial, sans-serif';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+                    ctx.shadowBlur = 15;
+                    ctx.shadowOffsetY = 5;
+                    ctx.fillText('🎉 สุขสันต์วันครบรอบ! 🎉', canvas.width / 2, 180);
+
+                    ctx.font = 'bold 120px Arial, sans-serif';
+                    const numberGradient = ctx.createLinearGradient(0, 250, 0, 380);
+                    numberGradient.addColorStop(0, '#FFFFFF');
+                    numberGradient.addColorStop(0.5, '#ffd700');
+                    numberGradient.addColorStop(1, '#ffc400');
+                    
+                    ctx.fillStyle = numberGradient;
+                    ctx.fillText(`${time.years}`, canvas.width / 2, 310);
+
+                    ctx.font = 'bold 60px "Noto Sans Thai", Arial, sans-serif';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillText('ปีแล้วนะ', canvas.width / 2, 400);
+
+                    ctx.font = '28px "Noto Sans Thai", Arial, sans-serif';
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                    ctx.fillText(`รักเหมือนวันแรกที่เจอกัน ❤️`, canvas.width / 2, 480);
+                } else { // Monthly
+                    ctx.font = 'bold 70px "Noto Sans Thai", Arial, sans-serif';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+                    ctx.shadowBlur = 15;
+                    ctx.shadowOffsetY = 5;
+                    ctx.fillText(`🎉 ครบรอบ ${monthsPassed} เดือน! 🎉`, canvas.width / 2, 180);
+                    
+                    ctx.font = 'bold 120px Arial, sans-serif';
+                    const numberGradient = ctx.createLinearGradient(0, 250, 0, 380);
+                    numberGradient.addColorStop(0, '#FFFFFF');
+                    numberGradient.addColorStop(0.5, '#74b9ff');
+                    numberGradient.addColorStop(1, '#6c5ce7');
+
+                    ctx.fillStyle = numberGradient;
+                    ctx.fillText(`${monthsPassed}`, canvas.width / 2, 310);
+
+                    ctx.font = 'bold 60px "Noto Sans Thai", Arial, sans-serif';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillText('เดือนแล้วนะ', canvas.width / 2, 400);
+
+                    ctx.font = '28px "Noto Sans Thai", Arial, sans-serif';
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                    ctx.fillText(`ความรักของเราเติบโตขึ้นทุกเดือน ❤️`, canvas.width / 2, 480);
+                }
+
+            } else {
+                ctx.font = 'bold 50px "Noto Sans Thai", Arial, sans-serif';
+                ctx.fillStyle = '#ffffff';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+                ctx.shadowBlur = 10;
+                ctx.shadowOffsetY = 2;
+                ctx.fillText('💖 โอ๊ค รัก เพลง 💖', canvas.width / 2, 110);
+
+                ctx.beginPath();
+                ctx.moveTo(canvas.width / 2 - 100, 145);
+                ctx.lineTo(canvas.width / 2 + 100, 145);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                ctx.shadowColor = 'transparent';
+
+                const daysText = time.totalDays.toString();
+                ctx.font = 'bold 170px Arial, sans-serif';
+                
+                const numberGradient = ctx.createLinearGradient(0, 180, 0, 320);
+                numberGradient.addColorStop(0, '#FFFFFF');
+                numberGradient.addColorStop(0.5, '#ffd700');
+                numberGradient.addColorStop(1, '#ffc400');
+                
+                ctx.fillStyle = numberGradient;
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+                ctx.shadowBlur = 20;
+                ctx.shadowOffsetY = 8;
+                ctx.fillText(daysText, canvas.width / 2, 260);
+                
+                ctx.font = 'bold 45px "Noto Sans Thai", Arial, sans-serif';
+                ctx.fillStyle = '#ffffff';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+                ctx.shadowBlur = 10;
+                ctx.shadowOffsetY = 2;
+                ctx.fillText('วันแล้วนะ', canvas.width / 2, 360);
+                
+                ctx.shadowColor = 'transparent';
+                ctx.font = '28px "Noto Sans Thai", Arial, sans-serif';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                const now = new Date();
+                const dateStr = `23.01.2025 - ${now.getDate()}.${now.getMonth() + 1}.${now.getFullYear()}`;
+                ctx.fillText(dateStr, canvas.width / 2, 430);
+
+                drawSparkle(ctx, 100, 200, 15);
+                drawSparkle(ctx, 720, 150, 20);
+                drawSparkle(ctx, 680, 480, 12);
+                drawSparkle(ctx, 120, 450, 18);
+                drawSparkle(ctx, 200, 80, 10);
+
+                ctx.font = 'italic 20px "Noto Sans Thai", Arial, sans-serif';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                ctx.fillText(`"Every day with you is my favorite day."`, canvas.width / 2, 500);
+            }
 
             const vignette = ctx.createRadialGradient(
                 canvas.width / 2, canvas.height / 2, canvas.width / 3,
@@ -1795,11 +1700,8 @@
             ctx.fillStyle = vignette;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.font = 'italic 20px "Noto Sans Thai", Arial, sans-serif';
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-            ctx.fillText(`"Every day with you is my favorite day."`, canvas.width / 2, 500);
-
             ctx.font = 'bold 24px "Noto Sans Thai", Arial, sans-serif';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
             ctx.fillText('โอ๊ค & เพลง', canvas.width / 2, 540);
             
             const link = document.createElement('a');
@@ -1813,7 +1715,31 @@
             const time = calculateTimeDifference();
             const now = new Date();
             const currentThemeIndex = themeMode === 0 ? new Date().getMonth() : manualTheme;
-            const text = `เรารักกัน ${time.totalDays} วันแล้ว!
+            let text;
+            const anniversaryType = getAnniversaryType();
+
+            if (anniversaryType > 0) {
+                 let monthsPassed = (now.getFullYear() - startDate.getFullYear()) * 12 + (now.getMonth() - startDate.getMonth());
+                 if (now.getDate() < startDate.getDate()) {
+                     monthsPassed--;
+                 }
+
+                if (anniversaryType === 2) { // Annual
+                    const years = time.years;
+                    text = `🎉 สุขสันต์วันครบรอบ ${years} ปี! 🎉
+
+ขอบคุณที่อยู่ข้างกันเสมอมา รักเพลงที่สุดเลยนะ ❤️
+จาก โอ๊ค
+
+#OakPlengAnniversary #${years}YearsOfLove`;
+                } else { // Monthly
+                    text = `🎉 สุขสันต์วันครบรอบ ${monthsPassed} เดือน! 🎉
+
+ขอบคุณที่อยู่ด้วยกันมาอีกเดือนนะ รักเหมือนเดิม ❤️
+#OakPlengMonthlyAnniversary #${monthsPassed}MonthsOfLove`;
+                }
+            } else {
+                text = `เรารักกัน ${time.totalDays} วันแล้ว!
             
 ตั้งแต่วันที่ 23 มกราคม 2025 
 จนถึงวันที่ ${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}
@@ -1821,6 +1747,7 @@
 ขอบคุณที่รักกันมาตลอด
 
 #รักกัน #${time.totalDays}วัน #ความรัก #${monthNames[currentThemeIndex].emoji}`;
+            }
             
             navigator.clipboard.writeText(text).then(() => {
                 alert('คัดลอกข้อความเรียบร้อยแล้ว!');
@@ -1845,149 +1772,38 @@
             goToStep(0);
         }
         
-        function showLockedPopup() {
-            const popup = document.getElementById('lockPopup');
-            popup.classList.add('active');
+        function initializePage() {
+            // Hide preloader with a fade-out effect
+            const preloader = document.getElementById('preloader');
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
 
-            if (popupCountdownInterval) {
-                clearInterval(popupCountdownInterval);
-            }
+            stepElements = document.querySelectorAll('.step');
+            stepContainer = document.getElementById('stepContainer');
+            loveCard = document.getElementById('loveCard');
 
-            const anniversaryDate = new Date(startDate.getTime());
-            anniversaryDate.setFullYear(anniversaryDate.getFullYear() + 1);
-
-            function updatePopupCountdown() {
-                const now = new Date();
-                const diff = anniversaryDate - now;
-
-                if (diff <= 0) {
-                    document.getElementById('countdown-days').textContent = 0;
-                    document.getElementById('countdown-hours').textContent = 0;
-                    document.getElementById('countdown-minutes').textContent = 0;
-                    document.getElementById('countdown-seconds').textContent = 0;
-                    clearInterval(popupCountdownInterval);
-                    return;
-                }
-
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-                document.getElementById('countdown-days').textContent = days;
-                document.getElementById('countdown-hours').textContent = hours;
-                document.getElementById('countdown-minutes').textContent = minutes;
-                document.getElementById('countdown-seconds').textContent = seconds;
-            }
-            
-            updatePopupCountdown();
-            popupCountdownInterval = setInterval(updatePopupCountdown, 1000);
-        }
-
-        function hideLockedPopup() {
-            document.getElementById('lockPopup').classList.remove('active');
-            if (popupCountdownInterval) {
-                clearInterval(popupCountdownInterval);
-                popupCountdownInterval = null;
-            }
-        }
-
-        function saveToCalendar() {
-            const anniversaryDate = new Date(startDate.getTime());
-            anniversaryDate.setFullYear(anniversaryDate.getFullYear() + 1);
-
-            function toISOStringWithUTC(date) {
-                return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-            }
-
-            function toDateStringOnly(date) {
-                const year = date.getFullYear();
-                const month = (date.getMonth() + 1).toString().padStart(2, '0');
-                const day = date.getDate().toString().padStart(2, '0');
-                return `${year}${month}${day}`;
-            }
-
-            const eventName = '💖 ครบรอบ 1 ปี โอ๊ค & เพลง 💖';
-            const eventDescription = 'วันครบรอบ 1 ปีความรักของเรา! อย่าลืมมาเปิดดูความทรงจำกันนะ 🥰';
-            
-            const startDateStr = toDateStringOnly(anniversaryDate);
-            
-            const endDate = new Date(anniversaryDate);
-            endDate.setDate(endDate.getDate() + 1);
-            const endDateStr = toDateStringOnly(endDate);
-            
-            const icsContent = [
-                'BEGIN:VCALENDAR',
-                'VERSION:2.0',
-                'PRODID:-//OakPlengLoveStory//EN',
-                'BEGIN:VEVENT',
-                `UID:${Date.now()}@oakpleng.love`,
-                `DTSTAMP:${toISOStringWithUTC(new Date())}`,
-                `SUMMARY:${eventName}`,
-                `DESCRIPTION:${eventDescription}`,
-                `DTSTART;VALUE=DATE:${startDateStr}`,
-                `DTEND;VALUE=DATE:${endDateStr}`,
-                'END:VEVENT',
-                'END:VCALENDAR'
-            ].join('\\r\\n');
-
-            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'anniversary-oak-pleng.ics';
-            
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        function checkMemoryLaneAccess() {
-            const time = calculateTimeDifference();
-            const daysInOneYear = 365;
-
-            if (time.totalDays >= daysInOneYear) {
-                goToStep(4);
+            if (themeMode === 0) {
+                setAutoTheme();
             } else {
-                showLockedPopup();
+                setTheme(manualTheme);
             }
+            
+            // Add a month indicator element if it doesn't exist
+            if (!document.getElementById('monthIndicator')) {
+                const indicator = document.createElement('div');
+                indicator.id = 'monthIndicator';
+                indicator.className = 'month-indicator';
+                loveCard.appendChild(indicator);
+            }
+            
+            goToStep(0);
         }
         
         // เริ่มต้น
         document.addEventListener('DOMContentLoaded', function() {
-            const unlockDate = new Date('2025-06-23T00:00:00');
-            const now = new Date();
-
-            if (now < unlockDate) {
-                document.body.classList.add('page-is-locked');
-                document.getElementById('pageLockOverlay').style.display = 'block';
-
-                const hoursEl = document.getElementById('lock-hours');
-                const minutesEl = document.getElementById('lock-minutes');
-                const secondsEl = document.getElementById('lock-seconds');
-
-                function updateLockCountdown() {
-                    const current = new Date();
-                    const diff = unlockDate - current;
-
-                    if (diff <= 0) {
-                        location.reload();
-                        return;
-                    }
-                    
-                    const h = Math.floor(diff / (1000 * 60 * 60));
-                    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-                    hoursEl.textContent = h.toString();
-                    minutesEl.textContent = m.toString().padStart(2, '0');
-                    secondsEl.textContent = s.toString().padStart(2, '0');
-                }
-                
-                setInterval(updateLockCountdown, 1000);
-                updateLockCountdown();
-            } else {
-                initializePage();
-            }
+            initializePage();
         });
         
         // ทำความสะอาดเมื่อปิดหน้าเว็บ
@@ -1998,9 +1814,7 @@
         });
 
         window.addEventListener('resize', () => {
-            if (!document.body.classList.contains('page-is-locked')) {
-                goToStep(currentStepIndex);
-            }
+            goToStep(currentStepIndex);
         });
 
         // Floating hearts on click
@@ -2022,6 +1836,74 @@
                 heart.remove();
             }, 1000);
         });
+
+        function showDevelopmentPopup() {
+            const popup = document.getElementById('lockPopup');
+            popup.classList.add('active');
+
+            if (popupCountdownInterval) {
+                clearInterval(popupCountdownInterval);
+            }
+
+            const devStartDate = startDate; // Use the relationship start date for progress
+            const devEndDate = new Date('2026-01-23T00:00:00');
+
+            function updateDevPopup() {
+                const now = new Date();
+                const diff = devEndDate - now;
+
+                if (diff <= 0) {
+                    document.getElementById('countdown-days').textContent = 0;
+                    document.getElementById('countdown-hours').textContent = '00';
+                    document.getElementById('countdown-minutes').textContent = '00';
+                    document.getElementById('countdown-seconds').textContent = '00';
+                    clearInterval(popupCountdownInterval);
+                    hideDevelopmentPopup();
+                    goToStep(4);
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('countdown-days').textContent = days;
+                document.getElementById('countdown-hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('countdown-minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('countdown-seconds').textContent = seconds.toString().padStart(2, '0');
+
+                // Progress bar calculation
+                const totalDuration = devEndDate - devStartDate;
+                const elapsedDuration = now - devStartDate;
+                const progress = Math.min(100, (elapsedDuration / totalDuration) * 100);
+                
+                document.getElementById('devProgressBar').style.width = progress.toFixed(2) + '%';
+                document.getElementById('devProgressLabel').textContent = progress.toFixed(2) + '%';
+            }
+            
+            updateDevPopup();
+            popupCountdownInterval = setInterval(updateDevPopup, 1000);
+        }
+
+        function hideDevelopmentPopup() {
+            document.getElementById('lockPopup').classList.remove('active');
+            if (popupCountdownInterval) {
+                clearInterval(popupCountdownInterval);
+                popupCountdownInterval = null;
+            }
+        }
+
+        function checkMemoryLaneAccess() {
+            const devEndDate = new Date('2026-01-23T00:00:00');
+            const now = new Date();
+
+            if (now >= devEndDate) {
+                goToStep(4);
+            } else {
+                showDevelopmentPopup();
+            }
+        }
     </script>
 </body>
 </html>
