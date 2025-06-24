@@ -1094,6 +1094,28 @@
             font-size: 0.9em;
             text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
+
+        #advicePopup.popup-overlay {
+            z-index: 40000;
+        }
+        #advicePopup .popup-content {
+            background: linear-gradient(135deg, #fff, #f0f4ff 80%);
+            color: #333;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            padding: 36px 28px 28px 28px;
+            position: relative;
+        }
+        #advicePopup .popup-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 28px;
+            color: #888;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body id="bodyElement">
@@ -1332,7 +1354,7 @@
                 <span class="progress-label" id="maintenanceProgressLabel">0%</span>
             </div>
             <div class="countdown-timer">
-                <p>โอ๊คจะเสร็จงานในอีก</p>
+                <p>โอ๊คจะเปิดให้น้าเพลงใช้งานในอีก</p>
                 <div class="popup-time-grid">
                     <div class="popup-time-unit">
                         <div class="popup-time-number" id="open-countdown-days">0</div>
@@ -1352,6 +1374,19 @@
                     </div>
                 </div>
             </div>
+            <button class="special-button" id="showAdviceBtn" style="margin-top:24px;">คำแนะนำ</button>
+        </div>
+    </div>
+
+    <!-- Popup คำแนะนำ -->
+    <div id="advicePopup" class="popup-overlay">
+        <div class="popup-content" style="max-width: 420px;" onclick="event.stopPropagation()">
+            <button class="popup-close" onclick="hideAdvicePopup()">&times;</button>
+            <h2>คำแนะนำสำหรับหน้าปิดปรับปรุง</h2>
+            <ol style="text-align:left; margin: 18px 0 0 0; padding-left: 22px; font-size:1.08em; color:#444;">
+                <li>จริงๆไม่มีอะไรนะ ก็คือปิดปรับปรุงเว็บไซต์อยู่</li>
+                <li>เจอกันใหม่เดือนหน้านะน้องเพลง</li>
+            </ol>
         </div>
     </div>
 
@@ -2013,6 +2048,8 @@
         // เริ่มต้น
         document.addEventListener('DOMContentLoaded', function() {
             initializePage();
+            startMaintenanceCountdown();
+            document.getElementById('showAdviceBtn').onclick = showAdvicePopup;
         });
         
         // ทำความสะอาดเมื่อปิดหน้าเว็บ
@@ -2246,7 +2283,7 @@
         }
 
         // Maintenance Countdown Bar
-        const maintenanceTarget = new Date('2025-06-24T11:00:00'); // เวลาปิดปรับปรุง (เริ่มปิด)
+        const maintenanceTarget = new Date('2025-06-24T10:30:00'); // เวลาปิดปรับปรุง (เริ่มปิด)
         const maintenanceEnd = new Date('2025-07-24T00:00:00'); // เวลาสิ้นสุดปิดปรับปรุง (เปิด)
         let maintenanceInterval;
         let maintenancePopupInterval;
@@ -2320,6 +2357,19 @@
         // เริ่มแถบแจ้งเตือนเมื่อเข้าเว็บ (หรือจะกำหนดเงื่อนไขเองก็ได้)
         document.addEventListener('DOMContentLoaded', function() {
             startMaintenanceCountdown();
+        });
+
+        // Popup คำแนะนำ
+        function showAdvicePopup() {
+            document.getElementById('advicePopup').classList.add('active');
+        }
+        function hideAdvicePopup() {
+            document.getElementById('advicePopup').classList.remove('active');
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            // ...
+            startMaintenanceCountdown();
+            document.getElementById('showAdviceBtn').onclick = showAdvicePopup;
         });
     </script>
 </body>
