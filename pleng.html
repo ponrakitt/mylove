@@ -347,6 +347,22 @@
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <script>
+      // Firebase config จริงของคุณ
+      const firebaseConfig = {
+        apiKey: "AIzaSyCPQE_EJhhfxR_HeYgBw7Xh8qKkUL0ALSY",
+        authDomain: "pleng-d3653.firebaseapp.com",
+        projectId: "pleng-d3653",
+        storageBucket: "pleng-d3653.firebasestorage.app",
+        messagingSenderId: "1056399778228",
+        appId: "1:1056399778228:web:a87c1ea6efde38b11112e1",
+        measurementId: "G-WX6QG1PR2F"
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+    </script>
     <script>
         // ตัวแปรหลัก
         let gameState = {
@@ -808,6 +824,19 @@
                 saveGameState();
             });
         };
+
+        // ฟังก์ชันทดสอบ Firestore
+        function addUserToFirestore(username, score) {
+            db.collection('users').add({ username, score })
+                .then(() => alert('เพิ่มผู้ใช้สำเร็จ!'));
+        }
+        function fetchUsersFromFirestore() {
+            db.collection('users').get().then(snapshot => {
+                const users = [];
+                snapshot.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
+                alert(JSON.stringify(users, null, 2));
+            });
+        }
     </script>
 </body>
 </html>
