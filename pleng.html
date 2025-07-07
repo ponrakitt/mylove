@@ -275,6 +275,12 @@
             method: 'POST',
             body: JSON.stringify(rowData),
             headers: { 'Content-Type': 'application/json' }
+        })
+        .then(res => res.text())
+        .then(txt => console.log('Apps Script response:', txt))
+        .catch(err => {
+            console.error('Fetch error:', err);
+            showModal('❌ Upload Error', 'Failed to send data to Google Sheets. ' + err);
         });
     }
     // --- TIMER ---
