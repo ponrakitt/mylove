@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>อะไรกัน</title>
+    <title>จดหมายรักพิเศษ</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap');
         
@@ -21,6 +21,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            overflow-x: hidden;
         }
         
         .container {
@@ -36,6 +37,256 @@
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(255, 182, 193, 0.3);
             border: 3px solid #ffb6c1;
+        }
+        
+        /* Mail Delivery Animation */
+        .mail-delivery {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #87CEEB, #E0F6FF);
+            z-index: 5000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .delivery-scene {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .mailman {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: #ff69b4;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            animation: walkAcross 4s ease-in-out forwards;
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .mailman::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            width: 100px;
+            height: 40px;
+            background: #d63384;
+            border-radius: 20px;
+            z-index: -1;
+        }
+        
+        .mailman::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: #ff69b4;
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        .mail-bag {
+            position: absolute;
+            top: -30px;
+            right: -20px;
+            width: 25px;
+            height: 30px;
+            background: #8B4513;
+            border-radius: 5px;
+            animation: bounce 0.5s ease-in-out infinite alternate;
+        }
+        
+        .letter-in-hand {
+            position: absolute;
+            top: 10px;
+            left: -40px;
+            width: 20px;
+            height: 15px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            animation: handWave 1s ease-in-out infinite;
+        }
+        
+        .mailbox {
+            position: absolute;
+            right: 20%;
+            bottom: 30%;
+            width: 60px;
+            height: 80px;
+            background: #ff69b4;
+            border-radius: 10px;
+            opacity: 0;
+            animation: mailboxAppear 1s ease-out 2s forwards;
+        }
+        
+        .mailbox::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 0;
+            width: 60px;
+            height: 20px;
+            background: #d63384;
+            border-radius: 10px 10px 0 0;
+            transform-origin: bottom;
+            animation: mailboxOpen 0.5s ease-out 3s forwards;
+        }
+        
+        .mailbox::after {
+            content: '📬';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+        }
+        
+        .delivery-message {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: #d63384;
+            font-weight: 600;
+            text-align: center;
+            opacity: 0;
+            animation: messageAppear 1s ease-out 3.5s forwards;
+        }
+        
+        .clouds {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50px;
+            opacity: 0.8;
+            animation: cloudMove 8s linear infinite;
+        }
+        
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50px;
+        }
+        
+        .cloud1 {
+            width: 60px;
+            height: 20px;
+            top: 20%;
+            left: -80px;
+        }
+        
+        .cloud1::before {
+            width: 30px;
+            height: 30px;
+            top: -15px;
+            left: 10px;
+        }
+        
+        .cloud1::after {
+            width: 40px;
+            height: 25px;
+            top: -10px;
+            left: 30px;
+        }
+        
+        .cloud2 {
+            width: 80px;
+            height: 25px;
+            top: 15%;
+            left: -100px;
+            animation-delay: -4s;
+        }
+        
+        .cloud2::before {
+            width: 35px;
+            height: 35px;
+            top: -15px;
+            left: 15px;
+        }
+        
+        .cloud2::after {
+            width: 45px;
+            height: 30px;
+            top: -10px;
+            left: 40px;
+        }
+        
+        @keyframes walkAcross {
+            0% {
+                left: -100px;
+                transform: scaleX(1);
+            }
+            50% {
+                left: 40%;
+                transform: scaleX(1);
+            }
+            70% {
+                left: 40%;
+                transform: scaleX(1);
+            }
+            100% {
+                left: 120%;
+                transform: scaleX(1);
+            }
+        }
+        
+        @keyframes bounce {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-5px); }
+        }
+        
+        @keyframes handWave {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+        
+        @keyframes mailboxAppear {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes mailboxOpen {
+            0% { transform: rotateX(0deg); }
+            100% { transform: rotateX(-90deg); }
+        }
+        
+        @keyframes messageAppear {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        
+        @keyframes cloudMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(100vw + 100px)); }
         }
         
         .login-page h1 {
@@ -94,6 +345,8 @@
             box-shadow: 0 10px 30px rgba(255, 182, 193, 0.3);
             border: 3px solid #ffb6c1;
             margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
         }
         
         .countdown-message {
@@ -118,11 +371,138 @@
             padding: 15px;
             border-radius: 10px;
             min-width: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .time-unit::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        .time-unit.final-countdown {
+            animation: pulse 1s infinite, glow 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(255, 105, 180, 0.8); }
         }
         
         .time-label {
             font-size: 14px;
             margin-top: 5px;
+        }
+        
+        /* Grand Opening Animation */
+        .grand-opening {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff69b4, #d63384, #ff1493, #ff69b4);
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite;
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .grand-opening-text {
+            font-size: 3em;
+            color: white;
+            font-weight: 600;
+            text-shadow: 0 0 20px rgba(255,255,255,0.8);
+            animation: bounceIn 2s ease-out;
+            margin-bottom: 30px;
+        }
+        
+        .grand-opening-subtitle {
+            font-size: 1.5em;
+            color: rgba(255,255,255,0.9);
+            animation: fadeInUp 2s ease-out 0.5s both;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes fadeInUp {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Fireworks Animation */
+        .fireworks {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: firework 2s ease-out forwards;
+        }
+        
+        @keyframes firework {
+            0% { transform: scale(0); opacity: 1; }
+            50% { opacity: 1; }
+            100% { transform: scale(20); opacity: 0; }
+        }
+        
+        /* Sparkles */
+        .sparkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1) rotate(180deg); opacity: 1; }
         }
         
         /* Envelope Styles */
@@ -140,32 +520,61 @@
             border-radius: 10px;
             position: relative;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: visible;
         }
-        
-        .envelope:hover {
-            transform: scale(1.05);
+        .envelope-border {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            width: 316px;
+            height: 216px;
+            z-index: 1;
+            border-radius: 12px;
+            pointer-events: none;
+            background: repeating-linear-gradient(135deg, #ff69b4 0 10px, #fff8dc 10px 20px, #1e90ff 20px 30px, #fff8dc 30px 40px);
+            border: 3px solid #fff8dc;
         }
-        
         .envelope-flap {
             position: absolute;
             top: -3px;
             left: -3px;
-            width: 306px;
-            height: 120px;
-            background: #f0e68c;
-            border: 3px solid #ddd;
+            width: 0;
+            height: 0;
+            border-left: 153px solid transparent;
+            border-right: 153px solid transparent;
+            border-bottom: 90px solid #f0e68c;
             border-radius: 10px 10px 0 0;
-            transform-origin: bottom;
+            z-index: 3;
             transition: transform 0.5s ease;
-            z-index: 2;
+            transform-origin: bottom center;
         }
-        
         .envelope.opened .envelope-flap {
             transform: rotateX(180deg);
         }
-        
+        .envelope-flap-fold {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, #e0c97f 40%, #fff8dc 60%);
+            opacity: 0.7;
+            z-index: 4;
+        }
+        .envelope-body {
+            position: absolute;
+            top: 85px;
+            left: 0;
+            width: 300px;
+            height: 115px;
+            background: #fff8dc;
+            border-radius: 0 0 10px 10px;
+            z-index: 2;
+            border-top: 2px solid #e0c97f;
+        }
         .envelope-text {
             position: absolute;
             top: 50%;
@@ -174,20 +583,18 @@
             font-size: 24px;
             color: #d63384;
             font-weight: 600;
-            z-index: 3;
+            z-index: 5;
             transition: opacity 0.3s ease;
         }
-        
         .envelope.opened .envelope-text {
             opacity: 0;
         }
-        
         .letter {
             position: absolute;
-            top: 20px;
+            top: 100px;
             left: 20px;
             width: 260px;
-            height: 160px;
+            height: 80px;
             background: white;
             border: 1px solid #ddd;
             border-radius: 5px;
@@ -203,7 +610,6 @@
             cursor: pointer;
             pointer-events: none;
         }
-        
         .envelope.opened .letter {
             opacity: 1;
             transform: translateY(-50px);
@@ -361,6 +767,31 @@
                 min-width: 60px;
                 padding: 10px;
             }
+            
+            .grand-opening-text {
+                font-size: 2em;
+            }
+            
+            .mailman {
+                width: 60px;
+                height: 60px;
+                font-size: 20px;
+            }
+            
+            .delivery-message {
+                font-size: 18px;
+                padding: 0 20px;
+            }
+        }
+        #banCountdown {
+            font-size: 2.2em;
+            color: #dc3545;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 8px #fff8dc;
+            letter-spacing: 2px;
+            display: none;
         }
     </style>
 </head>
@@ -374,6 +805,7 @@
             <br>
             <button class="login-btn" onclick="checkPin()">เข้าสู่ระบบ</button>
             <div class="error-message" id="errorMessage"></div>
+            <div id="banCountdown" style="display:none;"></div>
         </div>
         
         <!-- Main Page -->
@@ -384,19 +816,19 @@
                     อดทนรอหน่อยนะ...ยังไม่ถึงเวลาเปิดจดหมายน้าา ❤️
                 </div>
                 <div class="countdown-timer" id="countdownTimer">
-                    <div class="time-unit">
+                    <div class="time-unit" id="daysUnit">
                         <div id="days">00</div>
                         <div class="time-label">วัน</div>
                     </div>
-                    <div class="time-unit">
+                    <div class="time-unit" id="hoursUnit">
                         <div id="hours">00</div>
                         <div class="time-label">ชั่วโมง</div>
                     </div>
-                    <div class="time-unit">
+                    <div class="time-unit" id="minutesUnit">
                         <div id="minutes">00</div>
                         <div class="time-label">นาที</div>
                     </div>
-                    <div class="time-unit">
+                    <div class="time-unit" id="secondsUnit">
                         <div id="seconds">00</div>
                         <div class="time-label">วินาที</div>
                     </div>
@@ -405,8 +837,11 @@
             
             <!-- Envelope -->
             <div class="envelope-container">
-                <div class="envelope" id="envelope" onclick="openEnvelope()">
+                <div class="envelope disabled" id="envelope" onclick="openEnvelope()">
+                    <div class="envelope-border"></div>
                     <div class="envelope-flap"></div>
+                    <div class="envelope-flap-fold"></div>
+                    <div class="envelope-body"></div>
                     <div class="envelope-text">Read me?</div>
                     <div class="letter" id="letter" onclick="event.stopPropagation(); openLetterPopup()">
                         <div class="letter-content">
@@ -424,10 +859,11 @@
                     <div class="popup-letter-content">
                         <h3>ถึงน้องเพลงที่รักของเรา 💕</h3>
                         <p>สวัสดีน้องเพลงที่รักของเรา</p>
-                        <p>วันนี้ก็ครบรอบ 6 เดื่อนของเราแล้วนะ</p>
+                        <p>วันนี้ก็ครบรอบ 6 เดือนของเราแล้วนะ</p>
                         <p>วันนี้ก็คือเราอยากจะบอกน้องเพลงว่า</p>
                         <p>เรารักน้องเพลงมากๆเลยนะ ❤️</p>
                         <p>ขอบคุณน้องเพลงที่อยู่ข้างๆกันมาตลอดเลยนะครับ</p>
+                        <p>ขอบคุณที่่อยู่ด้วยกันมาตลอดครึ่งปีนี้นะ</p>
                         <p>ขอให้มันเป็นแบบนี้ตลอดไปนะ</p>
                         <p style="text-align: right; margin-top: 30px; font-style: italic;">ด้วยรักที่ไม่มีวันเปลี่ยน</p>
                         <p style="text-align: right; font-weight: 600; color: #d63384;">จากโอ๊คเองคับ:></p>
@@ -438,12 +874,45 @@
             <!-- Floating Hearts -->
             <div class="hearts" id="hearts"></div>
         </div>
+        
+        <!-- Grand Opening Animation -->
+        <div class="grand-opening" id="grandOpening">
+            <div class="fireworks" id="fireworks"></div>
+            <div class="sparkles" id="sparkles"></div>
+            <div class="grand-opening-text">🎉 ถึงเวลาแล้ว! 🎉</div>
+            <div class="grand-opening-subtitle">จดหมายรักพร้อมเปิดแล้วนะคะ 💕</div>
+        </div>
+        
+        <!-- Mail Delivery Animation -->
+        <div class="mail-delivery" id="mailDelivery">
+            <div class="clouds">
+                <div class="cloud cloud1"></div>
+                <div class="cloud cloud2"></div>
+            </div>
+            <div class="delivery-scene">
+                <div class="mailman">
+                    👨‍💼
+                    <div class="mail-bag"></div>
+                    <div class="letter-in-hand"></div>
+                </div>
+                <div class="mailbox"></div>
+                <div class="delivery-message">
+                    💌 จดหมายรักกำลังส่งมาถึงคุณ... 💌
+                </div>
+            </div>
+        </div>
     </div>
     
     <script>
         const correctPin = "2301";
         const targetDate = new Date("2025-07-23T00:00:00").getTime();
         let countdownInterval;
+        let wrongAttempts = 0;
+        let isBanned = false;
+        let banTimeout = null;
+        const BAN_LIMIT = 3;
+        let banCount = 0;
+        const BASE_BAN_DURATION = 60 * 1000; // 1 นาที
         
         // Check if target date has passed
         function isTargetDateReached() {
@@ -455,27 +924,143 @@
         function checkPin() {
             const pinInput = document.getElementById('pinInput');
             const errorMessage = document.getElementById('errorMessage');
-            
+            const loginBtn = document.querySelector('.login-btn');
+            const banCountdown = document.getElementById('banCountdown');
+            if (isBanned) {
+                errorMessage.textContent = 'คุณถูกแบน กรุณารอ...';
+                banCountdown.style.display = 'block';
+                return;
+            }
             if (pinInput.value === correctPin) {
                 document.getElementById('loginPage').style.display = 'none';
+                showMailDelivery();
+            } else {
+                wrongAttempts++;
+                if (wrongAttempts >= BAN_LIMIT) {
+                    isBanned = true;
+                    banCount++;
+                    const banDuration = 4 * banCount * 60 * 1000; // 4 × banCount นาที
+                    let remaining = banDuration;
+                    errorMessage.textContent = 'คุณถูกแบน กรุณารอ';
+                    banCountdown.style.display = 'block';
+                    const formatTime = (ms) => {
+                        const m = Math.floor(ms / 60000);
+                        const s = Math.floor((ms % 60000) / 1000);
+                        return (m > 0 ? m + ':' : '') + (s < 10 ? '0' : '') + s;
+                    };
+                    banCountdown.textContent = formatTime(remaining);
+                    pinInput.disabled = true;
+                    loginBtn.disabled = true;
+                    // แสดงเวลานับถอยหลัง
+                    const banInterval = setInterval(() => {
+                        remaining -= 1000;
+                        if (remaining <= 0) {
+                            clearInterval(banInterval);
+                        } else {
+                            banCountdown.textContent = formatTime(remaining);
+                        }
+                    }, 1000);
+                    banTimeout = setTimeout(() => {
+                        isBanned = false;
+                        wrongAttempts = 0;
+                        errorMessage.textContent = '';
+                        pinInput.disabled = false;
+                        loginBtn.disabled = false;
+                        pinInput.value = '';
+                        pinInput.focus();
+                        banCountdown.style.display = 'none';
+                    }, banDuration);
+                } else {
+                    errorMessage.textContent = 'PIN ไม่ถูกต้อง ลองใหม่อีกครั้งนะ';
+                    pinInput.value = '';
+                    pinInput.focus();
+                    banCountdown.style.display = 'none';
+                }
+            }
+        }
+        
+        // Show Mail Delivery Animation
+        function showMailDelivery() {
+            const mailDelivery = document.getElementById('mailDelivery');
+            mailDelivery.style.display = 'flex';
+            
+            // Hide mail delivery after 5 seconds and show main page
+            setTimeout(() => {
+                mailDelivery.style.display = 'none';
                 document.getElementById('mainPage').style.display = 'block';
                 initMainPage();
-            } else {
-                errorMessage.textContent = 'PIN ไม่ถูกต้อง ลองใหม่อีกครั้งนะ';
-                pinInput.value = '';
-                pinInput.focus();
-            }
+            }, 5000);
         }
         
         // Initialize Main Page
         function initMainPage() {
             if (isTargetDateReached()) {
-                document.getElementById('countdownContainer').style.display = 'none';
-                document.getElementById('envelope').classList.remove('disabled');
-                createFloatingHearts();
+                showGrandOpening();
             } else {
                 document.getElementById('envelope').classList.add('disabled');
                 startCountdown();
+                createFloatingHearts();
+            }
+        }
+        
+        // Show Grand Opening Animation
+        function showGrandOpening() {
+            const grandOpening = document.getElementById('grandOpening');
+            grandOpening.style.display = 'flex';
+            
+            // Create fireworks
+            createFireworks();
+            
+            // Create sparkles
+            createSparkles();
+            
+            // Hide grand opening after 5 seconds
+            setTimeout(() => {
+                grandOpening.style.display = 'none';
+                document.getElementById('countdownContainer').style.display = 'none';
+                document.getElementById('envelope').classList.remove('disabled');
+                document.getElementById('envelope').classList.add('ready');
+                createFloatingHearts();
+            }, 5000);
+        }
+        
+        // Create Fireworks
+        function createFireworks() {
+            const fireworks = document.getElementById('fireworks');
+            
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    firework.style.left = Math.random() * 100 + '%';
+                    firework.style.top = Math.random() * 100 + '%';
+                    firework.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
+                    fireworks.appendChild(firework);
+                    
+                    setTimeout(() => {
+                        firework.remove();
+                    }, 2000);
+                }, i * 300);
+            }
+        }
+        
+        // Create Sparkles
+        function createSparkles() {
+            const sparkles = document.getElementById('sparkles');
+            
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.style.left = Math.random() * 100 + '%';
+                    sparkle.style.top = Math.random() * 100 + '%';
+                    sparkle.style.animationDelay = Math.random() * 2 + 's';
+                    sparkles.appendChild(sparkle);
+                    
+                    setTimeout(() => {
+                        sparkle.remove();
+                    }, 4000);
+                }, i * 200);
             }
         }
         
@@ -487,9 +1072,7 @@
                 
                 if (timeLeft <= 0) {
                     clearInterval(countdownInterval);
-                    document.getElementById('countdownContainer').style.display = 'none';
-                    document.getElementById('envelope').classList.remove('disabled');
-                    createFloatingHearts();
+                    showGrandOpening();
                     return;
                 }
                 
@@ -502,6 +1085,18 @@
                 document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
                 document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
                 document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+                
+                // Add special effects when time is running out
+                if (timeLeft <= 60000) { // Less than 1 minute
+                    document.getElementById('secondsUnit').classList.add('final-countdown');
+                } else if (timeLeft <= 300000) { // Less than 5 minutes
+                    document.getElementById('minutesUnit').classList.add('final-countdown');
+                    document.getElementById('secondsUnit').classList.add('final-countdown');
+                } else if (timeLeft <= 3600000) { // Less than 1 hour
+                    document.getElementById('hoursUnit').classList.add('final-countdown');
+                    document.getElementById('minutesUnit').classList.add('final-countdown');
+                    document.getElementById('secondsUnit').classList.add('final-countdown');
+                }
             }, 1000);
         }
         
@@ -525,19 +1120,20 @@
         function openLetterPopup() {
             const popup = document.getElementById('popupModal');
             popup.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            document.body.style.overflow = 'hidden';
         }
         
         // Close Letter Popup Function
         function closeLetterPopup() {
             const popup = document.getElementById('popupModal');
             popup.style.display = 'none';
-            document.body.style.overflow = 'auto'; // Restore scrolling
+            document.body.style.overflow = 'auto';
         }
         
         // Create Floating Hearts
         function createFloatingHearts() {
             const heartsContainer = document.getElementById('hearts');
+            heartsContainer.innerHTML = "";
             const hearts = ['💕', '💖', '💗', '💝', '💞', '💟', '❤️'];
             
             for (let i = 0; i < 10; i++) {
