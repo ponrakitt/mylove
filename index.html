@@ -1,1175 +1,207 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>จดหมายรักพิเศษ</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Prompt', sans-serif;
-            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 50%, #ffd4e8 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            text-align: center;
-            max-width: 600px;
-            width: 100%;
-        }
-        
-        /* Login Page Styles */
-        .login-page {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.3);
-            border: 3px solid #ffb6c1;
-        }
-        
-        /* Mail Delivery Animation */
-        .mail-delivery {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #87CEEB, #E0F6FF);
-            z-index: 5000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        
-        .delivery-scene {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .mailman {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            background: #ff69b4;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 30px;
-            animation: walkAcross 4s ease-in-out forwards;
-            z-index: 10;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .mailman::before {
-            content: '';
-            position: absolute;
-            top: -20px;
-            left: -10px;
-            width: 100px;
-            height: 40px;
-            background: #d63384;
-            border-radius: 20px;
-            z-index: -1;
-        }
-        
-        .mailman::after {
-            content: '';
-            position: absolute;
-            bottom: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 60px;
-            background: #ff69b4;
-            border-radius: 50%;
-            z-index: -1;
-        }
-        
-        .mail-bag {
-            position: absolute;
-            top: -30px;
-            right: -20px;
-            width: 25px;
-            height: 30px;
-            background: #8B4513;
-            border-radius: 5px;
-            animation: bounce 0.5s ease-in-out infinite alternate;
-        }
-        
-        .letter-in-hand {
-            position: absolute;
-            top: 10px;
-            left: -40px;
-            width: 20px;
-            height: 15px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 2px;
-            animation: handWave 1s ease-in-out infinite;
-        }
-        
-        .mailbox {
-            position: absolute;
-            right: 20%;
-            bottom: 30%;
-            width: 60px;
-            height: 80px;
-            background: #ff69b4;
-            border-radius: 10px;
-            opacity: 0;
-            animation: mailboxAppear 1s ease-out 2s forwards;
-        }
-        
-        .mailbox::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 0;
-            width: 60px;
-            height: 20px;
-            background: #d63384;
-            border-radius: 10px 10px 0 0;
-            transform-origin: bottom;
-            animation: mailboxOpen 0.5s ease-out 3s forwards;
-        }
-        
-        .mailbox::after {
-            content: '📬';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 20px;
-        }
-        
-        .delivery-message {
-            position: absolute;
-            top: 20%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 24px;
-            color: #d63384;
-            font-weight: 600;
-            text-align: center;
-            opacity: 0;
-            animation: messageAppear 1s ease-out 3.5s forwards;
-        }
-        
-        .clouds {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-        
-        .cloud {
-            position: absolute;
-            background: white;
-            border-radius: 50px;
-            opacity: 0.8;
-            animation: cloudMove 8s linear infinite;
-        }
-        
-        .cloud::before,
-        .cloud::after {
-            content: '';
-            position: absolute;
-            background: white;
-            border-radius: 50px;
-        }
-        
-        .cloud1 {
-            width: 60px;
-            height: 20px;
-            top: 20%;
-            left: -80px;
-        }
-        
-        .cloud1::before {
-            width: 30px;
-            height: 30px;
-            top: -15px;
-            left: 10px;
-        }
-        
-        .cloud1::after {
-            width: 40px;
-            height: 25px;
-            top: -10px;
-            left: 30px;
-        }
-        
-        .cloud2 {
-            width: 80px;
-            height: 25px;
-            top: 15%;
-            left: -100px;
-            animation-delay: -4s;
-        }
-        
-        .cloud2::before {
-            width: 35px;
-            height: 35px;
-            top: -15px;
-            left: 15px;
-        }
-        
-        .cloud2::after {
-            width: 45px;
-            height: 30px;
-            top: -10px;
-            left: 40px;
-        }
-        
-        @keyframes walkAcross {
-            0% {
-                left: -100px;
-                transform: scaleX(1);
-            }
-            50% {
-                left: 40%;
-                transform: scaleX(1);
-            }
-            70% {
-                left: 40%;
-                transform: scaleX(1);
-            }
-            100% {
-                left: 120%;
-                transform: scaleX(1);
-            }
-        }
-        
-        @keyframes bounce {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-5px); }
-        }
-        
-        @keyframes handWave {
-            0%, 100% { transform: rotate(-10deg); }
-            50% { transform: rotate(10deg); }
-        }
-        
-        @keyframes mailboxAppear {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes mailboxOpen {
-            0% { transform: rotateX(0deg); }
-            100% { transform: rotateX(-90deg); }
-        }
-        
-        @keyframes messageAppear {
-            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-            100% { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-        
-        @keyframes cloudMove {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(calc(100vw + 100px)); }
-        }
-        
-        .login-page h1 {
-            color: #d63384;
-            margin-bottom: 30px;
-            font-size: 2em;
-        }
-        
-        .pin-input {
-            font-size: 24px;
-            padding: 15px;
-            border: 2px solid #ffb6c1;
-            border-radius: 10px;
-            text-align: center;
-            margin: 20px 0;
-            width: 200px;
-            letter-spacing: 5px;
-        }
-        
-        .pin-input:focus {
-            outline: none;
-            border-color: #d63384;
-            box-shadow: 0 0 10px rgba(214, 51, 132, 0.3);
-        }
-        
-        .login-btn {
-            background: linear-gradient(45deg, #d63384, #ff69b4);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 25px;
-            font-size: 18px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        
-        .login-btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        .error-message {
-            color: #dc3545;
-            margin-top: 15px;
-            font-size: 16px;
-        }
-        
-        /* Main Page Styles */
-        .main-page {
-            display: none;
-        }
-        
-        .countdown-container {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.3);
-            border: 3px solid #ffb6c1;
-            margin-bottom: 30px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .countdown-message {
-            color: #d63384;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        
-        .countdown-timer {
-            font-size: 36px;
-            font-weight: 600;
-            color: #ff69b4;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .time-unit {
-            background: linear-gradient(45deg, #d63384, #ff69b4);
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            min-width: 80px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .time-unit::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shimmer 2s infinite;
-        }
-        
-        .time-unit.final-countdown {
-            animation: pulse 1s infinite, glow 2s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.5); }
-            50% { box-shadow: 0 0 30px rgba(255, 105, 180, 0.8); }
-        }
-        
-        .time-label {
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        
-        /* Grand Opening Animation */
-        .grand-opening {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #ff69b4, #d63384, #ff1493, #ff69b4);
-            background-size: 400% 400%;
-            animation: gradientShift 3s ease infinite;
-            z-index: 10000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        .grand-opening-text {
-            font-size: 3em;
-            color: white;
-            font-weight: 600;
-            text-shadow: 0 0 20px rgba(255,255,255,0.8);
-            animation: bounceIn 2s ease-out;
-            margin-bottom: 30px;
-        }
-        
-        .grand-opening-subtitle {
-            font-size: 1.5em;
-            color: rgba(255,255,255,0.9);
-            animation: fadeInUp 2s ease-out 0.5s both;
-        }
-        
-        @keyframes bounceIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            50% { transform: scale(1.1); opacity: 1; }
-            70% { transform: scale(0.9); }
-            100% { transform: scale(1); }
-        }
-        
-        @keyframes fadeInUp {
-            0% { transform: translateY(50px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-        
-        /* Fireworks Animation */
-        .fireworks {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-        
-        .firework {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: white;
-            border-radius: 50%;
-            animation: firework 2s ease-out forwards;
-        }
-        
-        @keyframes firework {
-            0% { transform: scale(0); opacity: 1; }
-            50% { opacity: 1; }
-            100% { transform: scale(20); opacity: 0; }
-        }
-        
-        /* Sparkles */
-        .sparkles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-        
-        .sparkle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: white;
-            border-radius: 50%;
-            animation: sparkle 1.5s ease-in-out infinite;
-        }
-        
-        @keyframes sparkle {
-            0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
-            50% { transform: scale(1) rotate(180deg); opacity: 1; }
-        }
-        
-        /* Envelope Styles */
-        .envelope-container {
-            position: relative;
-            display: inline-block;
-            margin: 50px auto;
-        }
-        
-        .envelope {
-            width: 300px;
-            height: 200px;
-            background: #fff8dc;
-            border: 3px solid #ddd;
-            border-radius: 10px;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            overflow: visible;
-        }
-        .envelope-border {
-            position: absolute;
-            top: -8px;
-            left: -8px;
-            width: 316px;
-            height: 216px;
-            z-index: 1;
-            border-radius: 12px;
-            pointer-events: none;
-            background: repeating-linear-gradient(135deg, #ff69b4 0 10px, #fff8dc 10px 20px, #1e90ff 20px 30px, #fff8dc 30px 40px);
-            border: 3px solid #fff8dc;
-        }
-        .envelope-flap {
-            position: absolute;
-            top: -3px;
-            left: -3px;
-            width: 0;
-            height: 0;
-            border-left: 153px solid transparent;
-            border-right: 153px solid transparent;
-            border-bottom: 90px solid #f0e68c;
-            border-radius: 10px 10px 0 0;
-            z-index: 3;
-            transition: transform 0.5s ease;
-            transform-origin: bottom center;
-        }
-        .envelope.opened .envelope-flap {
-            transform: rotateX(180deg);
-        }
-        .envelope-flap-fold {
-            position: absolute;
-            top: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 2px;
-            background: linear-gradient(90deg, #e0c97f 40%, #fff8dc 60%);
-            opacity: 0.7;
-            z-index: 4;
-        }
-        .envelope-body {
-            position: absolute;
-            top: 85px;
-            left: 0;
-            width: 300px;
-            height: 115px;
-            background: #fff8dc;
-            border-radius: 0 0 10px 10px;
-            z-index: 2;
-            border-top: 2px solid #e0c97f;
-        }
-        .envelope-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 24px;
-            color: #d63384;
-            font-weight: 600;
-            z-index: 5;
-            transition: opacity 0.3s ease;
-        }
-        .envelope.opened .envelope-text {
-            opacity: 0;
-        }
-        .letter {
-            position: absolute;
-            top: 100px;
-            left: 20px;
-            width: 260px;
-            height: 80px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease;
-            z-index: 10;
-            padding: 20px;
-            font-size: 14px;
-            line-height: 1.6;
-            color: #333;
-            overflow-y: auto;
-            cursor: pointer;
-            pointer-events: none;
-        }
-        .envelope.opened .letter {
-            opacity: 1;
-            transform: translateY(-50px);
-            pointer-events: auto;
-        }
-        
-        .envelope.opened .letter:hover {
-            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3);
-            transform: translateY(-52px);
-        }
-        
-        /* Popup Modal Styles */
-        .popup-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .popup-content {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            max-width: 500px;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border: 3px solid #ffb6c1;
-            animation: popupSlideIn 0.5s ease-out;
-        }
-        
-        @keyframes popupSlideIn {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-        
-        .popup-close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 28px;
-            color: #d63384;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .popup-close:hover {
-            color: #ff69b4;
-        }
-        
-        .popup-letter-content {
-            text-align: left;
-            font-size: 16px;
-            line-height: 1.8;
-            color: #333;
-        }
-        
-        .popup-letter-content h3 {
-            color: #d63384;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 24px;
-        }
-        
-        .popup-letter-content p {
-            margin-bottom: 15px;
-        }
-        
-        .letter-content {
-            text-align: left;
-        }
-        
-        .letter h3 {
-            color: #d63384;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        
-        .hearts {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-        
-        .heart {
-            position: absolute;
-            font-size: 20px;
-            color: #ff69b4;
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        .disabled {
-            opacity: 0.5;
-            cursor: not-allowed !important;
-        }
-        
-        .disabled:hover {
-            transform: none !important;
-        }
-        
-        .hidden {
-            display: none !important;
-        }
-        
-        .visible {
-            display: block !important;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .envelope {
-                width: 250px;
-                height: 170px;
-            }
-            
-            .envelope-flap {
-                width: 256px;
-                height: 100px;
-            }
-            
-            .letter {
-                width: 210px;
-                height: 130px;
-                font-size: 12px;
-            }
-            
-            .countdown-timer {
-                font-size: 24px;
-            }
-            
-            .time-unit {
-                min-width: 60px;
-                padding: 10px;
-            }
-            
-            .grand-opening-text {
-                font-size: 2em;
-            }
-            
-            .mailman {
-                width: 60px;
-                height: 60px;
-                font-size: 20px;
-            }
-            
-            .delivery-message {
-                font-size: 18px;
-                padding: 0 20px;
-            }
-        }
-        #banCountdown {
-            font-size: 2.2em;
-            color: #dc3545;
-            font-weight: bold;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 8px #fff8dc;
-            letter-spacing: 2px;
-            display: none;
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>กลับมาคบกันได้มั้ยคับ</title>
+<style>
+  :root{
+    --bg1:#ff9a9e; --bg2:#fad0c4; --card:#ffffffee; --text:#333;
+    --accent:#ff4d6d; --shadow:0 12px 40px rgba(0,0,0,.15);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family:"Sarabun", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Thai", sans-serif;
+    background:linear-gradient(135deg, var(--bg1), var(--bg2));
+    display:flex; align-items:center; justify-content:center; padding:24px; color:var(--text);
+  }
+  .card{
+    width:min(720px,96vw); background:var(--card); border-radius:26px; padding:28px 22px 32px;
+    box-shadow:var(--shadow); text-align:center;
+  }
+  h1{margin:.2em 0 .3em; font-size:clamp(1.6rem,4.6vw,2.4rem)}
+  p.lead{opacity:.9; margin:0 0 1.1rem}
+  .buttons{display:flex; justify-content:center; gap:14px; flex-wrap:wrap}
+  button{
+    border:0; border-radius:16px; padding:14px 18px; cursor:pointer; transition:transform .2s, box-shadow .2s, opacity .2s;
+    font-size:clamp(1rem,2.8vw,1.15rem);
+  }
+  #yesBtn{background:linear-gradient(135deg,#ff6b6b,#f06595); color:#fff; box-shadow:0 8px 20px rgba(240,101,149,.4)}
+  #noBtn{background:#fff; color:#444; border:2px solid #e9e9e9; box-shadow:0 6px 16px rgba(0,0,0,.08)}
+  #yesBtn:hover{transform:translateY(-2px) scale(1.03)}
+  #noBtn:hover{transform:translateY(-1px)}
+
+  /* Special message overlay (กด ได้เลยย) */
+  .overlay,
+  .overlay-reason{
+    position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.35); z-index:50;
+    padding:18px;
+  }
+  .overlay.show,
+  .overlay-reason.show{ display:grid; }
+
+  .modal{
+    width:min(760px,94vw); background:#fff; border-radius:24px; padding:24px 20px 20px; text-align:center;
+    box-shadow:0 18px 50px rgba(0,0,0,.25); animation:pop .22s ease-out both;
+  }
+  .modal h2{margin:.1em 0 .35em; color:#e5386d; font-size:clamp(1.5rem,4.5vw,2.2rem)}
+  .modal p{margin:.35em 0; font-size:clamp(1.02rem,2.6vw,1.15rem)}
+  .modal .close{margin-top:14px; padding:10px 16px; border:0; border-radius:12px; background:#111; color:#fff; cursor:pointer}
+
+  /* Reason popup detail */
+  .reason-title{font-weight:700; color:#444; margin-bottom:.35rem}
+  .reason-text{font-size:clamp(1.05rem,2.8vw,1.2rem)}
+  .reason-count{margin-top:.35rem; opacity:.6; font-size:.95rem}
+
+  /* Cute hearts */
+  .hearts{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:60 }
+  .heart{ position:absolute; font-size:22px; animation:fall 3.6s linear forwards; filter:drop-shadow(0 4px 6px rgba(0,0,0,.2)) }
+
+  @keyframes pop{ from{transform:scale(.9); opacity:0} to{transform:scale(1); opacity:1} }
+  @keyframes fall{
+    0%{ transform: translateY(-10vh) rotate(0deg); opacity:0 }
+    10%{ opacity:1 }
+    100%{ transform: translateY(110vh) rotate(360deg); opacity:0 }
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- Login Page -->
-        <div class="login-page" id="loginPage">
-            <h1>💕 ยินดีต้อนรับ 💕</h1>
-            <p>กรุณาใส่รหัส PIN 4 หลัก</p>
-            <input type="password" class="pin-input" id="pinInput" maxlength="4" placeholder="••••">
-            <br>
-            <button class="login-btn" onclick="checkPin()">เข้าสู่ระบบ</button>
-            <div class="error-message" id="errorMessage"></div>
-            <div id="banCountdown" style="display:none;"></div>
-        </div>
-        
-        <!-- Main Page -->
-        <div class="main-page" id="mainPage">
-            <!-- Countdown Container -->
-            <div class="countdown-container" id="countdownContainer">
-                <div class="countdown-message">
-                    อดทนรอหน่อยนะ...ยังไม่ถึงเวลาเปิดจดหมายน้าา ❤️
-                </div>
-                <div class="countdown-timer" id="countdownTimer">
-                    <div class="time-unit" id="daysUnit">
-                        <div id="days">00</div>
-                        <div class="time-label">วัน</div>
-                    </div>
-                    <div class="time-unit" id="hoursUnit">
-                        <div id="hours">00</div>
-                        <div class="time-label">ชั่วโมง</div>
-                    </div>
-                    <div class="time-unit" id="minutesUnit">
-                        <div id="minutes">00</div>
-                        <div class="time-label">นาที</div>
-                    </div>
-                    <div class="time-unit" id="secondsUnit">
-                        <div id="seconds">00</div>
-                        <div class="time-label">วินาที</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Envelope -->
-            <div class="envelope-container">
-                <div class="envelope disabled" id="envelope" onclick="openEnvelope()">
-                    <div class="envelope-border"></div>
-                    <div class="envelope-flap"></div>
-                    <div class="envelope-flap-fold"></div>
-                    <div class="envelope-body"></div>
-                    <div class="envelope-text">Read me?</div>
-                    <div class="letter" id="letter" onclick="event.stopPropagation(); openLetterPopup()">
-                        <div class="letter-content">
-                            <h3>คลิกที่นี่เพื่ออ่านจดหมาย 💕</h3>
-                            <p style="text-align: center; color: #d63384; margin-top: 30px;">📝 คลิก!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Popup Modal -->
-            <div class="popup-modal" id="popupModal" onclick="closeLetterPopup()">
-                <div class="popup-content" onclick="event.stopPropagation()">
-                    <div class="popup-close" onclick="closeLetterPopup()">&times;</div>
-                    <div class="popup-letter-content">
-                        <h3>ถึงน้องเพลงที่รักของเรา 💕</h3>
-                        <p>สวัสดีน้องเพลงที่รักของเรา</p>
-                        <p>วันนี้ก็ครบรอบ 6 เดือนของเราแล้วนะ</p>
-                        <p>วันนี้ก็คือเราอยากจะบอกน้องเพลงว่า</p>
-                        <p>เรารักน้องเพลงมากๆเลยนะ ❤️</p>
-                        <p>ขอบคุณน้องเพลงที่อยู่ข้างๆกันมาตลอดเลยนะครับ</p>
-                        <p>ขอบคุณที่่อยู่ด้วยกันมาตลอดครึ่งปีนี้นะ</p>
-                        <p>ขอให้มันเป็นแบบนี้ตลอดไปนะ</p>
-                        <p style="text-align: right; margin-top: 30px; font-style: italic;">ด้วยรักที่ไม่มีวันเปลี่ยน</p>
-                        <p style="text-align: right; font-weight: 600; color: #d63384;">จากโอ๊คเองคับ:></p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Floating Hearts -->
-            <div class="hearts" id="hearts"></div>
-        </div>
-        
-        <!-- Grand Opening Animation -->
-        <div class="grand-opening" id="grandOpening">
-            <div class="fireworks" id="fireworks"></div>
-            <div class="sparkles" id="sparkles"></div>
-            <div class="grand-opening-text">🎉 ถึงเวลาแล้ว! 🎉</div>
-            <div class="grand-opening-subtitle">จดหมายรักพร้อมเปิดแล้วนะคะ 💕</div>
-        </div>
-        
-        <!-- Mail Delivery Animation -->
-        <div class="mail-delivery" id="mailDelivery">
-            <div class="clouds">
-                <div class="cloud cloud1"></div>
-                <div class="cloud cloud2"></div>
-            </div>
-            <div class="delivery-scene">
-                <div class="mailman">
-                    👨‍💼
-                    <div class="mail-bag"></div>
-                    <div class="letter-in-hand"></div>
-                </div>
-                <div class="mailbox"></div>
-                <div class="delivery-message">
-                    💌 จดหมายรักกำลังส่งมาถึงคุณ... 💌
-                </div>
-            </div>
-        </div>
+  <main class="card" role="dialog" aria-labelledby="title">
+    <h1 id="title">กลับมาคบกันได้มั้ยครับน้องเพลง 🥺</h1>
+    <p class="lead">ขอโอกาศให้เราได้โตไปข้างๆน้องเพลงอีกครั้งได้มั้ยครับ</p>
+
+    <div class="buttons" aria-live="polite">
+      <button id="yesBtn" aria-label="ได้เลยย">ได้เลยย 💘</button>
+      <button id="noBtn" aria-label="ไม่">ไม่ 😅</button>
     </div>
-    
-    <script>
-        const correctPin = "2301";
-        const targetDate = new Date("2025-07-23T00:00:00").getTime();
-        let countdownInterval;
-        let wrongAttempts = 0;
-        let isBanned = false;
-        let banTimeout = null;
-        const BAN_LIMIT = 3;
-        let banCount = 0;
-        const BASE_BAN_DURATION = 60 * 1000; // 1 นาที
-        
-        // Check if target date has passed
-        function isTargetDateReached() {
-            const now = new Date().getTime();
-            return now >= targetDate;
-        }
-        
-        // PIN Check Function
-        function checkPin() {
-            const pinInput = document.getElementById('pinInput');
-            const errorMessage = document.getElementById('errorMessage');
-            const loginBtn = document.querySelector('.login-btn');
-            const banCountdown = document.getElementById('banCountdown');
-            if (isBanned) {
-                errorMessage.textContent = 'คุณถูกแบน กรุณารอ...';
-                banCountdown.style.display = 'block';
-                return;
-            }
-            if (pinInput.value === correctPin) {
-                document.getElementById('loginPage').style.display = 'none';
-                showMailDelivery();
-            } else {
-                wrongAttempts++;
-                if (wrongAttempts >= BAN_LIMIT) {
-                    isBanned = true;
-                    banCount++;
-                    const banDuration = 4 * banCount * 60 * 1000; // 4 × banCount นาที
-                    let remaining = banDuration;
-                    errorMessage.textContent = 'คุณถูกแบน กรุณารอ';
-                    banCountdown.style.display = 'block';
-                    const formatTime = (ms) => {
-                        const m = Math.floor(ms / 60000);
-                        const s = Math.floor((ms % 60000) / 1000);
-                        return (m > 0 ? m + ':' : '') + (s < 10 ? '0' : '') + s;
-                    };
-                    banCountdown.textContent = formatTime(remaining);
-                    pinInput.disabled = true;
-                    loginBtn.disabled = true;
-                    // แสดงเวลานับถอยหลัง
-                    const banInterval = setInterval(() => {
-                        remaining -= 1000;
-                        if (remaining <= 0) {
-                            clearInterval(banInterval);
-                        } else {
-                            banCountdown.textContent = formatTime(remaining);
-                        }
-                    }, 1000);
-                    banTimeout = setTimeout(() => {
-                        isBanned = false;
-                        wrongAttempts = 0;
-                        errorMessage.textContent = '';
-                        pinInput.disabled = false;
-                        loginBtn.disabled = false;
-                        pinInput.value = '';
-                        pinInput.focus();
-                        banCountdown.style.display = 'none';
-                    }, banDuration);
-                } else {
-                    errorMessage.textContent = 'PIN ไม่ถูกต้อง ลองใหม่อีกครั้งนะ';
-                    pinInput.value = '';
-                    pinInput.focus();
-                    banCountdown.style.display = 'none';
-                }
-            }
-        }
-        
-        // Show Mail Delivery Animation
-        function showMailDelivery() {
-            const mailDelivery = document.getElementById('mailDelivery');
-            mailDelivery.style.display = 'flex';
-            
-            // Hide mail delivery after 5 seconds and show main page
-            setTimeout(() => {
-                mailDelivery.style.display = 'none';
-                document.getElementById('mainPage').style.display = 'block';
-                initMainPage();
-            }, 5000);
-        }
-        
-        // Initialize Main Page
-        function initMainPage() {
-            if (isTargetDateReached()) {
-                showGrandOpening();
-            } else {
-                document.getElementById('envelope').classList.add('disabled');
-                startCountdown();
-                createFloatingHearts();
-            }
-        }
-        
-        // Show Grand Opening Animation
-        function showGrandOpening() {
-            const grandOpening = document.getElementById('grandOpening');
-            grandOpening.style.display = 'flex';
-            
-            // Create fireworks
-            createFireworks();
-            
-            // Create sparkles
-            createSparkles();
-            
-            // Hide grand opening after 5 seconds
-            setTimeout(() => {
-                grandOpening.style.display = 'none';
-                document.getElementById('countdownContainer').style.display = 'none';
-                document.getElementById('envelope').classList.remove('disabled');
-                document.getElementById('envelope').classList.add('ready');
-                createFloatingHearts();
-            }, 5000);
-        }
-        
-        // Create Fireworks
-        function createFireworks() {
-            const fireworks = document.getElementById('fireworks');
-            
-            for (let i = 0; i < 15; i++) {
-                setTimeout(() => {
-                    const firework = document.createElement('div');
-                    firework.className = 'firework';
-                    firework.style.left = Math.random() * 100 + '%';
-                    firework.style.top = Math.random() * 100 + '%';
-                    firework.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
-                    fireworks.appendChild(firework);
-                    
-                    setTimeout(() => {
-                        firework.remove();
-                    }, 2000);
-                }, i * 300);
-            }
-        }
-        
-        // Create Sparkles
-        function createSparkles() {
-            const sparkles = document.getElementById('sparkles');
-            
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    const sparkle = document.createElement('div');
-                    sparkle.className = 'sparkle';
-                    sparkle.style.left = Math.random() * 100 + '%';
-                    sparkle.style.top = Math.random() * 100 + '%';
-                    sparkle.style.animationDelay = Math.random() * 2 + 's';
-                    sparkles.appendChild(sparkle);
-                    
-                    setTimeout(() => {
-                        sparkle.remove();
-                    }, 4000);
-                }, i * 200);
-            }
-        }
-        
-        // Countdown Timer
-        function startCountdown() {
-            countdownInterval = setInterval(() => {
-                const now = new Date().getTime();
-                const timeLeft = targetDate - now;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(countdownInterval);
-                    showGrandOpening();
-                    return;
-                }
-                
-                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-                
-                document.getElementById('days').textContent = days.toString().padStart(2, '0');
-                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-                
-                // Add special effects when time is running out
-                if (timeLeft <= 60000) { // Less than 1 minute
-                    document.getElementById('secondsUnit').classList.add('final-countdown');
-                } else if (timeLeft <= 300000) { // Less than 5 minutes
-                    document.getElementById('minutesUnit').classList.add('final-countdown');
-                    document.getElementById('secondsUnit').classList.add('final-countdown');
-                } else if (timeLeft <= 3600000) { // Less than 1 hour
-                    document.getElementById('hoursUnit').classList.add('final-countdown');
-                    document.getElementById('minutesUnit').classList.add('final-countdown');
-                    document.getElementById('secondsUnit').classList.add('final-countdown');
-                }
-            }, 1000);
-        }
-        
-        // Open Envelope Function
-        function openEnvelope() {
-            const envelope = document.getElementById('envelope');
-            
-            if (envelope.classList.contains('disabled')) {
-                return;
-            }
-            
-            if (!envelope.classList.contains('opened')) {
-                envelope.classList.add('opened');
-                setTimeout(() => {
-                    createFloatingHearts();
-                }, 500);
-            }
-        }
-        
-        // Open Letter Popup Function
-        function openLetterPopup() {
-            const popup = document.getElementById('popupModal');
-            popup.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-        
-        // Close Letter Popup Function
-        function closeLetterPopup() {
-            const popup = document.getElementById('popupModal');
-            popup.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-        
-        // Create Floating Hearts
-        function createFloatingHearts() {
-            const heartsContainer = document.getElementById('hearts');
-            heartsContainer.innerHTML = "";
-            const hearts = ['💕', '💖', '💗', '💝', '💞', '💟', '❤️'];
-            
-            for (let i = 0; i < 10; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.className = 'heart';
-                    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-                    heart.style.left = Math.random() * 100 + '%';
-                    heart.style.animationDelay = Math.random() * 3 + 's';
-                    heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                    
-                    heartsContainer.appendChild(heart);
-                    
-                    setTimeout(() => {
-                        heart.remove();
-                    }, 5000);
-                }, i * 200);
-            }
-        }
-        
-        // Enter key support for PIN input
-        document.getElementById('pinInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkPin();
-            }
-        });
-        
-        // ESC key support for closing popup
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeLetterPopup();
-            }
-        });
-        
-        // Focus on PIN input when page loads
-        document.getElementById('pinInput').focus();
-    </script>
+  </main>
+
+  <!-- Special message (YES) -->
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="modal" role="alertdialog" aria-labelledby="okTitle">
+      <h2 id="okTitle">ไปบอกโอ๊คเลยย 💖</h2>
+      <p>ขอบคุณที่ให้โอกาสกันอีกครั้งนะ</p>
+      <button class="close" id="close">โอเค</button>
+    </div>
+  </div>
+
+  <!-- Reason popup (NO) -->
+  <div class="overlay-reason" id="reasonOverlay" aria-hidden="true">
+    <div class="modal" role="alertdialog" aria-labelledby="reasonTitle">
+      <div class="reason-title" id="reasonTitle">เหตุผลที่ขอคืนดี</div>
+      <div class="reason-text" id="reasonText"></div>
+      <div class="reason-count" id="reasonCount"></div>
+      <button class="close" id="reasonClose">รับทราบ</button>
+    </div>
+  </div>
+
+  <!-- Hearts layer -->
+  <div class="hearts" id="hearts"></div>
+
+<script>
+  // --- Scaling logic when pressing "ไม่"
+  let yesScale=1.0, noScale=1.0;
+  const YES_GROW=1.15, NO_SHRINK=0.85, NO_MIN=0.35, YES_MAX=3.0;
+
+  // Reasons list (ตามที่ให้มา)
+  const reasons=[
+    "เราอยากมีกันแบบนี้ต่อไปนานๆ",
+    "เรายังอยากมีน้องเพลงเดินไปข้างๆเรา",
+    "เราไม่อยากปล่อยมือน้องเพลงเลย",
+    "เราจะใส่ใจตัวเองมากขึ้นและจะดูแลน้องเพลงไปพร้อมกัน",
+    "จะไม่เปลี่ยนตัวเองจนเกินไปแล้ว",
+    "เราจะโตขึ้นให้ได้เลยแต่เราอยากให้น้องเพลงเห็นเราที่ค่อยๆโตไปด้วยกันนะ",
+    "เราขอโทษที่เราไม่ยอมบอกอะไรน้องตรงๆ",
+    "เราใช้ชีวิตด้วยกันจริงๆนะ",
+    "เรายังมีอีกหลายๆที่เรายังไม่ได้ไปด้วยกันเลยนะ",
+    "เรายังมีอีกหลายๆอย่างที่เรายังไม่ได้ทำด้วยกันเลยนะ",
+    "เรายังมีอีกหลายๆสัญญาที่เราให้กันไว้แล้วยังไม่ได้ทำให้กันเลยนะ",
+    "กลับมาคบกันเถอะนะครับ"
+  ];
+  let reasonIndex=0;
+
+  // Elements
+  const yesBtn=document.getElementById('yesBtn');
+  const noBtn=document.getElementById('noBtn');
+  const overlay=document.getElementById('overlay');
+  const closeBtn=document.getElementById('close');
+
+  const reasonOverlay=document.getElementById('reasonOverlay');
+  const reasonClose=document.getElementById('reasonClose');
+  const reasonText=document.getElementById('reasonText');
+  const reasonCount=document.getElementById('reasonCount');
+
+  const hearts=document.getElementById('hearts');
+
+  function applyScales(){
+    yesBtn.style.transform=`scale(${yesScale})`;
+    noBtn.style.transform=`scale(${noScale})`;
+    noBtn.style.opacity=Math.max(0.45, noScale);
+    yesBtn.style.boxShadow=`0 ${Math.min(14, 6*yesScale)}px ${Math.min(32, 20*yesScale)}px rgba(240,101,149,.45)`;
+  }
+
+  function sprinkleHearts(count=80){
+    hearts.innerHTML="";
+    const emojis=["💖","💘","❤️","💞","💓","💗","💕"];
+    const vw=Math.max(document.documentElement.clientWidth||0, window.innerWidth||0);
+    for(let i=0;i<count;i++){
+      const s=document.createElement('span');
+      s.className='heart';
+      s.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+      s.style.left=(Math.random()*vw)+"px";
+      s.style.animationDuration=(3+Math.random()*2)+"s";
+      s.style.animationDelay=(Math.random()*0.8)+"s";
+      s.style.fontSize=(18+Math.random()*22)+"px";
+      hearts.appendChild(s);
+    }
+    setTimeout(()=>{hearts.innerHTML="";},6000);
+  }
+
+  // Show/Hide helpers
+  function show(el){ el.classList.add('show'); el.setAttribute('aria-hidden','false'); }
+  function hide(el){ el.classList.remove('show'); el.setAttribute('aria-hidden','true'); }
+
+  // Click "ไม่" -> show reason popup (with counter)
+  noBtn.addEventListener('click', ()=>{
+    const idx=reasonIndex % reasons.length;
+    reasonText.textContent="เพราะว่า… "+reasons[idx];
+    reasonCount.textContent=`(${idx+1}/${reasons.length})`;
+    show(reasonOverlay);
+
+    // Scale buttons each time
+    yesScale=Math.min(YES_MAX, yesScale*YES_GROW);
+    noScale=Math.max(NO_MIN, noScale*NO_SHRINK);
+    applyScales();
+
+    reasonIndex++;
+
+    // Subtle button tap anim
+    noBtn.animate([{transform:`scale(${noScale})`},{transform:`scale(${noScale*0.95})`},{transform:`scale(${noScale})`}], {duration:180});
+    yesBtn.animate([{transform:`scale(${yesScale*0.98})`},{transform:`scale(${yesScale})`}], {duration:180});
+  });
+
+  // Close reason popup
+  reasonClose.addEventListener('click', ()=> hide(reasonOverlay));
+  reasonOverlay.addEventListener('click', (e)=>{ if(e.target===reasonOverlay) hide(reasonOverlay); });
+
+  // Click "ได้เลยย" -> special message + hearts
+  yesBtn.addEventListener('click', ()=>{
+    show(overlay);
+    sprinkleHearts(90);
+  });
+  closeBtn.addEventListener('click', ()=> hide(overlay));
+  overlay.addEventListener('click', (e)=>{ if(e.target===overlay) hide(overlay); });
+
+  // Initial
+  applyScales();
+
+  // Keep button within screen when scaled big
+  const ro=new ResizeObserver(()=>{
+    const maxButtonWidth=Math.min(window.innerWidth*0.9,640);
+    yesBtn.style.maxWidth=maxButtonWidth+"px";
+  });
+  ro.observe(document.body);
+</script>
 </body>
 </html>
