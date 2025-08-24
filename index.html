@@ -14,17 +14,32 @@
     --pink:#7a2a3a; --pink2:#b03c59; --accent:#ff6b9e; --ok:#34d399;
   }
   *{box-sizing:border-box}
+
+  /* ✅ ไม่ให้หน้าเลื่อน */
+  html, body{ height:100%; }
   body{
-    margin:0; min-height:100vh;
+    margin:0;
+    min-height:100svh;
+    display:grid; place-items:center; /* จัดให้อยู่กลางจอ */
     font-family:"Sarabun",system-ui,-apple-system,"Segoe UI",Roboto,Arial,"Noto Sans Thai",sans-serif;
     color:var(--text);
     background: radial-gradient(1200px 1200px at 80% -20%, #ffd6e7 0%, var(--bg) 60%);
-    overflow-x:hidden;
+    overflow:hidden; /* ล็อกสกอลล์ */
   }
+
   .float-heart{ position:fixed; opacity:.35; animation: rise 14s linear infinite; pointer-events:none; filter: blur(.2px)}
   @keyframes rise{ from{ transform: translateY(110vh) scale(.7) rotate(0) } to{ transform: translateY(-15vh) scale(1.1) rotate(360deg) } }
 
-  .wrap{ width:100%; max-width:1080px; margin:0 auto; padding:28px; display:grid; gap:24px; grid-template-columns: repeat(auto-fit, minm ax(300px, 1fr)); align-items:start; }
+  /* พื้นที่คอนเทนต์หลัก: จะถูกสเกลให้พอดีจอด้วย JS */
+  .wrap{
+    width:100%; max-width:1080px;
+    margin:0 auto; padding:28px;
+    display:grid; gap:24px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* แก้ typo แล้ว */
+    align-items:start;
+    transform-origin:center center; /* ให้สเกลจากกึ่งกลาง */
+    will-change: transform;
+  }
   header{ grid-column:1/-1; text-align:center }
   h1{ margin:0 0 8px; color:var(--accent); font-weight:900; letter-spacing:.3px }
   .sub{ color:var(--muted); font-size:14px }
@@ -33,10 +48,10 @@
   .chip{ border:1.5px solid var(--accent); color:var(--accent); background:transparent; padding:10px 14px; border-radius:999px; font-weight:700; cursor:pointer }
   .chip.active{ background:var(--accent); color:#fff }
 
-  .card{ background:var(--card); border-radius:18px; padding:18px 18px 24px; box-shadow: 0 18px 60px rgba(0,0,0,.12) }
+  .card{ background:var(--card); border-radius:18px; padding:18px 18px 20px; box-shadow: 0 18px 60px rgba(0,0,0,.12) }
   .card h2{ margin:2px 0 8px; font-size:18px }
 
-  .envelope{ width:280px; height:170px; margin:14px auto 10px; position:relative; cursor:pointer; perspective:800px; transition: transform .2s ease; touch-action:none }
+  .envelope{ width:280px; height:170px; margin:10px auto 8px; position:relative; cursor:pointer; perspective:800px; transition: transform .2s ease; touch-action:none }
   .tilt:hover{ transform: translateY(-3px) }
   .env-body{ position:absolute; inset:0; background:var(--pink); border-radius:10px; box-shadow: inset 0 -8px 0 rgba(0,0,0,.07) }
   .env-flap{ position:absolute; left:0; right:0; top:0; height:0;
@@ -47,25 +62,25 @@
   .envelope.open .env-flap{ transform: rotateX(180deg) }
   .envelope.open .letter-sheet{ height:130px; top:-8px }
 
-  .row-actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:8px }
+  .row-actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:6px }
   .btn{ border:0; border-radius:999px; padding:12px 16px; font-weight:800; cursor:pointer; background:var(--accent); color:white; box-shadow: 0 10px 24px rgba(214,51,108,.25) }
   .btn.ghost{ background:transparent; color:var(--accent); border:2px solid var(--accent) }
 
   .letter{ display:none } /* ใช้ Pop-up A4 แทน */
 
-  .countdown{ margin-top:10px; display:grid; gap:10px; grid-template-columns: 100px 1fr; align-items:center }
-  .progress{ width:100px; height:100px; }
+  .countdown{ margin-top:8px; display:grid; gap:10px; grid-template-columns: 90px 1fr; align-items:center }
+  .progress{ width:90px; height:90px; }
   .progress circle{ fill:none; stroke-width:10; stroke-linecap:round }
   .progress .track{ stroke: #eee } [data-theme="dark"] .progress .track{ stroke:#2a2227 }
   .progress .bar{ stroke: var(--accent); transform: rotate(-90deg); transform-origin:50% 50%; transition: stroke-dashoffset .8s ease }
   .cd-text{ font-size:14px; color:var(--muted) }
 
-  .hint{ color:var(--muted); font-size:13px; margin-top:6px; text-align:center }
+  .hint{ color:var(--muted); font-size:13px; margin-top:4px; text-align:center }
   .shake{ animation: shake .5s ease } @keyframes shake{
     10%,90%{ transform: translateX(-1px) } 20%,80%{ transform: translateX(2px) }
     30%,50%,70%{ transform: translateX(-4px) } 40%,60%{ transform: translateX(4px) } }
 
-  /* ===== A4 POPUP (Fit to screen) ===== */
+  /* ===== A4 POPUP (Fit to screen, no scroll) ===== */
   .modal{
     position:fixed; inset:0; display:none; align-items:center; justify-content:center;
     padding: clamp(8px,2vmin,24px);
@@ -79,12 +94,10 @@
   .modal.show{ display:flex }
   .sheet{
     background:#fff; color:#222; border-radius:10px; box-shadow: 0 30px 80px rgba(0,0,0,.45);
-    /* ฟิตจอ: อัตราส่วน 210/297, กว้างไม่เกิน 98vw และสูงไม่เกิน 98vh */
     width: min(98vw, calc(98vh * 210 / 297));
-    aspect-ratio: 210 / 297; /* ความสูงจะตามอัตราส่วนเสมอ → ไม่ล้น 98vh */
+    aspect-ratio: 210 / 297;
     display:grid; grid-template-rows:auto 1fr; overflow:hidden;
-    max-height: 98vh;  /* ป้องกันเกินความสูงจอ */
-    max-width: 98vw;   /* ป้องกันเกินความกว้างจอ */
+    max-height: 98vh; max-width: 98vw;
   }
   .sheet-head{ display:flex; align-items:center; justify-content:space-between; gap:8px;
     padding:10px 14px; background:#f7f7f7; border-bottom:1px solid #e9e9e9 }
@@ -93,8 +106,11 @@
   .icon-btn{ border:1px solid #ddd; background:#fff; border-radius:10px; padding:10px 14px; cursor:pointer; font-weight:700 }
   .icon-btn.print{ background:#111; color:#fff; border-color:#111 }
   .sheet-body{
-    padding:18px 22px; overflow:auto; line-height:1.75; font-size:16px; background:#fff; position:relative;
+    padding:18px 22px; background:#fff; position:relative;
+    overflow:hidden; /* ✅ ไม่ให้มีสกอลล์ในแผ่น */
   }
+  /* คอนเทนต์ด้านในจะถูก scale ให้พอดีโดย JS */
+  .content-wrap{ transform-origin: top left; }
   .sheet-body .typed{ white-space:pre-wrap }
   .a4-photos{ display:grid; gap:14px; margin-top:14px }
   .a4-photos img{ width:100%; border-radius:10px; box-shadow: 0 10px 24px rgba(0,0,0,.12); cursor:zoom-in }
@@ -115,17 +131,16 @@
     .env-flap{ border-left:110px solid transparent; border-right:110px solid transparent; border-bottom:70px solid var(--pink2) }
     .letter-sheet{ left:10px; right:10px; top:52px }
     .btn{ padding:11px 14px; font-size:14px }
-    .progress{ width:86px; height:86px }
+    .progress{ width:80px; height:80px }
     .cd-text{ font-size:13px }
     .sheet-body{ font-size:15px }
   }
-  /* จอเตี้ย (แนวนอนมือถือ ฯลฯ) → ลด padding ภายในแผ่นเพื่อให้ไม่ล้น */
   @media (max-height: 520px){
-    .sheet-body{ padding:12px 14px; line-height:1.6 }
+    .sheet-body{ padding:12px 14px; }
     .icon-btn{ padding:8px 10px }
   }
 
-  /* Print: แสดงเฉพาะแผ่น A4 */
+  /* Print */
   @media print{
     body{ background:#fff }
     .wrap, .float-heart, #confetti, .lightbox{ display:none !important }
@@ -158,10 +173,10 @@
   <!-- Lightbox -->
   <div id="lightbox" class="lightbox" aria-hidden="true">
     <span class="close" aria-label="Close">✕</span>
-    <img alt="">
+    <img alt=""/>
   </div>
 
-  <div class="wrap">
+  <div class="wrap" id="wrap">
     <header>
       <h1>ขอบคุณที่อยู่ด้วยกันมา 7 เดือนนะ 💕</h1>
       <div class="sub">ขอบคุณช่วงเวลาดีๆที่มีให้เรามาตลอด7เดือนนะครับ</div>
@@ -239,6 +254,7 @@ document.documentElement.setAttribute('data-theme', savedTheme || (prefersDark?'
 let soundOn = (localStorage.getItem('sound')||'off')==='on';
 const $ = s => document.querySelector(s);
 
+const wrap = $('#wrap');
 const envOpen = $('#envOpen'), envLocked = $('#envLocked');
 const btnOpenNow = $('#btnOpenNow'), btnOpenLocked = $('#btnOpenLocked');
 const btnAnim1 = $('#btnAnim1'), btnAnim2 = $('#btnAnim2');
@@ -246,12 +262,12 @@ const toggleTheme = $('#toggleTheme'), toggleSound = $('#toggleSound'), secretBt
 
 const modal = $('#modal'), sheetTitle = $('#sheetTitle'), sheetBody = $('#sheetBody');
 const btnPrint = $('#btnPrint'), btnClose = $('#btnClose');
-const lightbox = $('#lightbox'), lightboxImg = lightbox.querySelector('img'), lightboxClose = lightbox.querySelector('.close');
+const lightbox = $('#lightbox'), lightboxImg = lightbox.querySelector('img');
 
 toggleSound.classList.toggle('active', soundOn);
 toggleSound.textContent = `เสียง: ${soundOn ? 'เปิด' : 'ปิด'}`;
 
-// floating hearts (ลดจำนวนบนมือถือ)
+// 💗 floating hearts (ลดจำนวนบนมือถือ)
 (function hearts(){
   const coarse = matchMedia('(pointer:coarse)').matches;
   const n = coarse ? 10 : 14;
@@ -263,6 +279,22 @@ toggleSound.textContent = `เสียง: ${soundOn ? 'เปิด' : 'ปิ
     document.body.appendChild(h);
   }
 })();
+
+// 🎛️ ฟังก์ชันสเกลคอนเทนต์หลักให้พอดีจอ (ไม่ต้องเลื่อนหน้า)
+function fitMain(){
+  if(!wrap) return;
+  wrap.style.transform = 'scale(1)';
+  const rect = wrap.getBoundingClientRect();
+  const pad = 0;
+  const availW = window.innerWidth - pad;
+  const availH = window.innerHeight - pad;
+  const scale = Math.min(1, availW/rect.width, availH/rect.height);
+  wrap.style.transformOrigin = 'center center';
+  wrap.style.transform = `scale(${scale})`;
+}
+addEventListener('load', fitMain);
+addEventListener('resize', ()=>{ fitMain(); fitA4Text(); });
+addEventListener('orientationchange', ()=>{ setTimeout(()=>{ fitMain(); fitA4Text(); }, 150); });
 
 // Tilt (mouse + touch)
 function bindTilt(el){
@@ -317,7 +349,7 @@ function chime(){
 
 // Confetti (เบาลงบนมือถือ)
 const cvs = document.getElementById('confetti'), ctx = cvs.getContext('2d'); let parts=[];
-function resize(){ cvs.width=innerWidth; cvs.height=innerHeight } addEventListener('resize',resize); resize();
+function resizeCanvas(){ cvs.width=innerWidth; cvs.height=innerHeight } addEventListener('resize',resizeCanvas); resizeCanvas();
 function blast(x=innerWidth/2,y=innerHeight/3,n=120){
   const coarse = matchMedia('(pointer:coarse)').matches;
   const count = coarse ? Math.floor(n*0.55) : n;
@@ -328,17 +360,27 @@ function blast(x=innerWidth/2,y=innerHeight/3,n=120){
 ;(function loop(){ ctx.clearRect(0,0,cvs.width,cvs.height); parts=parts.filter(p=>p.a>0&&p.y<innerHeight+40);
   for(const p of parts){ p.vx*=0.995; p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; p.a*=0.986; ctx.globalAlpha=Math.max(0,p.a); ctx.fillStyle=`hsl(${p.hue} 90% 60%)`; ctx.fillRect(p.x,p.y,p.s,p.s);} requestAnimationFrame(loop); })();
 
-// Lock body scroll when modal open
-function lockScroll(lock){ document.body.style.overflow = lock ? 'hidden' : ''; }
+// Lock body scroll when modal open (เรา lock หน้าอยู่แล้ว แต่เผื่อใช้ซ้ำ)
+function lockScroll(lock){ document.body.style.overflow = lock ? 'hidden' : 'hidden'; } // คง hidden ไว้เสมอ
 
-// A4 Popup
+/* ===== A4 Popup: สร้าง content-wrap แล้ว scale ให้พอดีแผ่น ===== */
 function openA4(title, text, images){
   sheetTitle.textContent = title || 'จดหมาย';
   sheetBody.scrollTop = 0;
   sheetBody.innerHTML = '';
-  typewriter(sheetBody, (title?`📬 ${title}\n\n`:'') + (text||''), 16, ()=>{
+
+  // สร้างคอนเทนเนอร์ที่สามารถ scale ได้
+  const wrap = document.createElement('div');
+  wrap.className = 'content-wrap';
+  sheetBody.appendChild(wrap);
+
+  // เริ่มพิมพ์ทีละตัว
+  let fittingInterval = setInterval(fitA4Text, 120);
+  typewriter(wrap, (title?`📬 ${title}\n\n`:'') + (text||''), 16, ()=>{
+    // ถ้ามีรูป — ใส่ต่อท้าย
     if (Array.isArray(images) && images.length){
-      const grid = document.createElement('div'); grid.className = 'a4-photos';
+      const grid = document.createElement('div');
+      grid.className = 'a4-photos';
       images.forEach(({src, caption=''})=>{
         const fig = document.createElement('figure'); fig.style.margin='0';
         const img = document.createElement('img'); img.loading='lazy'; img.decoding='async'; img.src=src; img.alt=caption||'';
@@ -347,47 +389,71 @@ function openA4(title, text, images){
         fig.appendChild(img); if (caption) fig.appendChild(cap);
         grid.appendChild(fig);
       });
-      sheetBody.appendChild(grid);
+      wrap.appendChild(grid);
     }
+    clearInterval(fittingInterval);
+    fitA4Text(); // ฟิตอีกรอบหลังพิมพ์เสร็จ
   });
-  modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); lockScroll(true);
+
+  document.getElementById('modal').classList.add('show');
+  document.getElementById('modal').setAttribute('aria-hidden','false');
+  lockScroll(true);
 }
-function closeA4(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); lockScroll(false); }
-btnClose.addEventListener('click', closeA4);
-modal.addEventListener('click', (e)=>{ if (e.target === modal) closeA4(); });
-btnPrint.addEventListener('click', ()=> window.print());
+
+// ปรับขนาดเนื้อหาในแผ่นให้พอดีโดยไม่ต้องสกอลล์
+function fitA4Text(){
+  const wrap = sheetBody.querySelector('.content-wrap');
+  if(!wrap) return;
+  wrap.style.transform = 'scale(1)';
+  wrap.style.width = 'auto';
+  const h = wrap.scrollHeight;
+  const avail = sheetBody.clientHeight;
+  const scale = Math.min(1, avail / Math.max(1,h));
+  wrap.style.transform = `scale(${scale})`;
+  wrap.style.width = (100/scale)+'%'; // รักษาความกว้างหลัง scale
+}
+
+function closeA4(){
+  document.getElementById('modal').classList.remove('show');
+  document.getElementById('modal').setAttribute('aria-hidden','true');
+  lockScroll(false);
+}
+document.getElementById('btnClose').addEventListener('click', closeA4);
+document.getElementById('modal').addEventListener('click', (e)=>{ if (e.target === document.getElementById('modal')) closeA4(); });
+document.getElementById('btnPrint').addEventListener('click', ()=> window.print());
 
 // Lightbox
 let lbStartY=null;
-function openLightbox(src, alt){ lightboxImg.src = src; lightboxImg.alt = alt||''; lightbox.classList.add('show'); lightbox.setAttribute('aria-hidden','false'); }
-function closeLightbox(){ lightbox.classList.remove('show'); lightbox.setAttribute('aria-hidden','true'); setTimeout(()=> (lightboxImg.src=''), 200); }
-lightbox.addEventListener('click', (e)=>{ if (e.target===lightbox || e.target===lightboxClose) closeLightbox(); });
-lightbox.addEventListener('pointerdown', e=>{ lbStartY = e.clientY; });
-lightbox.addEventListener('pointerup', e=>{ if (lbStartY!=null && e.clientY - lbStartY > 60) closeLightbox(); lbStartY=null; });
-addEventListener('keydown', (e)=>{ if (e.key==='Escape' && lightbox.classList.contains('show')) closeLightbox(); });
+function openLightbox(src, alt){ lightboxImg.src = src; lightboxImg.alt = alt||''; document.getElementById('lightbox').classList.add('show'); document.getElementById('lightbox').setAttribute('aria-hidden','false'); }
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('show'); document.getElementById('lightbox').setAttribute('aria-hidden','true'); setTimeout(()=> (lightboxImg.src=''), 200); }
+document.getElementById('lightbox').addEventListener('click', (e)=>{ if (e.target===document.getElementById('lightbox') || e.target.classList.contains('close')) closeLightbox(); });
+document.getElementById('lightbox').addEventListener('pointerdown', e=>{ lbStartY = e.clientY; });
+document.getElementById('lightbox').addEventListener('pointerup', e=>{ if (lbStartY!=null && e.clientY - lbStartY > 60) closeLightbox(); lbStartY=null; });
+addEventListener('keydown', (e)=>{ if (e.key==='Escape' && document.getElementById('lightbox').classList.contains('show')) closeLightbox(); });
 
 // Open-now -> A4
 const OPEN_TEXT =
 `💌 ขอบคุณช่วงเวลาดีๆที่มีให้เรามาตลอด7เดือนนะครับ
-รอบนี้อาจจะมาช้าไปหน่อยแล้วก็ไม่รู้ว่าเราจะได้ทำให้อีก
-เมื่อไหร่แต่ก็จะรอน้องกลับมาเปิดจดหมายอีกซองพร้อมๆ
-กับเรานะครับ
-เราไม่รู้หรอกว่าที่ผ่านมาน้องจะรักเราจริงรึป่าวหรือว่าจะแอบคุยกับใคร
-แต่เรามีความสุขมากๆตลอดเวลาที่ผ่านมาเรารักน้องมากๆจาก
-ได้เท่านี้เลยนะแต่ว่าการจากกันครั้งนี้เราไม่บอกลาหรอกนะ:)
-เพราะเราคิดว่ายังไงเราก็ต้องกลับมาเจอกันเราจะรอวันนั้นนะ
-เพราะว่าเรายังมีอีกหลายๆที่ ที่เราสัญญาว่าจะไปด้วยกัน
-เรายังไม่ได้ไปด้วยกันเลยนะ ยังมีอีกหลายๆอย่างที่ยังไม่
-ได้ทำด้วยกันเลยเพราะงั้นเราจะรอน้องกลับมาทำไปพร้อม
-กับเรานะครับ
-รักน้องเพลงเสมอนะ
-จากโอ๊ค
-ปล.เราตั้งใจเขียนจดหมายทั้ง2ฉบับนี้มากๆเลยนะครับ
-อยากให้น้องได้อ่านทั้ง2ฉบับเลยแต่ว่าอีกฉบับนึงเราขอ
-เก็บไว้เปิดพร้อมกับน้องเพลงนะครับ😉`;
+รอบนี้อาจจะมาช้าไปหน่อยแล้วก็ไม่รู้ว่าเราจะได้ทำให้อีกเมื่อไหร่
+แต่ก็จะรอน้องกลับมาเปิดจดหมายอีกซองพร้อมๆกับเรานะครับ
+
+เราไม่รู้หรอกว่าที่ผ่านมาน้องจะรักเราจริงรึเปล่า หรือจะแอบคุยกับใคร
+แต่เรามีความสุขมากๆ ตลอดเวลาที่ผ่านมา เรารักน้องมากๆ
+การจากกันครั้งนี้เราไม่บอกลาหรอกนะ :)
+
+เพราะเราคิดว่ายังไงเราก็ต้องกลับมาเจอกัน เราจะรอวันนั้นนะ
+เพราะว่าเรายังมีอีกหลายๆ ที่ ที่เราสัญญาว่าจะไปด้วยกัน
+หลายอย่างที่ยังไม่ได้ทำด้วยกันเลย เพราะงั้นเราจะรอน้องกลับมาทำไปพร้อมกับเรานะครับ
+
+รักน้องเพลงเสมอ
+จาก โอ๊ค
+
+ป.ล. เราตั้งใจเขียนจดหมายทั้ง 2 ฉบับนี้มากๆ เลยนะครับ
+อยากให้น้องได้อ่านทั้ง 2 ฉบับ แต่ขอเก็บอีกฉบับไว้เปิดพร้อมกันกับน้องเพลงนะครับ 😉`;
+
 let anim1=false, anim2=false;
-btnAnim1.addEventListener('click', ()=>{ anim1=!anim1; envOpen.classList.toggle('open',anim1); });
-btnAnim2.addEventListener('click', ()=>{ anim2=!anim2; envLocked.classList.toggle('open',anim2); });
+btnAnim1.addEventListener('click', ()=>{ anim1=!anim1; envOpen.classList.toggle('open',anim1); fitMain(); });
+btnAnim2.addEventListener('click', ()=>{ anim2=!anim2; envLocked.classList.toggle('open',anim2); fitMain(); });
 btnOpenNow.addEventListener('click', ()=>{
   envOpen.classList.add('open'); anim1=true;
   blast(innerWidth/2, innerHeight*0.35, 180); chime();
@@ -408,7 +474,6 @@ function updateRing(){
   if (diff<=0){
     bar.setAttribute('stroke-dashoffset','0');
     if (CONFIG.AUTO_OPEN) showLockedLetter(true);
-    return;
   } else {
     if (!updateRing.start) updateRing.start = now.getTime();
     const total = target.getTime() - updateRing.start;
@@ -446,6 +511,7 @@ toggleTheme.addEventListener('click', ()=>{
   const cur=document.documentElement.getAttribute('data-theme'); const next=cur==='dark'?'light':'dark';
   document.documentElement.setAttribute('data-theme',next); localStorage.setItem('theme', next);
   toggleTheme.classList.toggle('active', next==='dark');
+  fitMain();
 });
 toggleTheme.classList.toggle('active', (savedTheme|| (prefersDark?'dark':'light'))==='dark');
 
