@@ -1,207 +1,474 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>กลับมาคบกันได้มั้ยคับ</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>ขอบคุณสำหรับ7เดือนนะ</title>
 <style>
   :root{
-    --bg1:#ff9a9e; --bg2:#fad0c4; --card:#ffffffee; --text:#333;
-    --accent:#ff4d6d; --shadow:0 12px 40px rgba(0,0,0,.15);
+    --bg:#fff0f6; --card:#ffffff; --text:#3a2a33; --muted:#6b6b6b;
+    --pink:#ffcad4; --pink2:#ff99ac; --accent:#d6336c; --ok:#17a34a;
+  }
+  [data-theme="dark"]{
+    --bg:#0f0a0c; --card:#161117; --text:#f6e9f0; --muted:#b9a8b1;
+    --pink:#7a2a3a; --pink2:#b03c59; --accent:#ff6b9e; --ok:#34d399;
   }
   *{box-sizing:border-box}
-  html,body{height:100%}
   body{
-    margin:0; font-family:"Sarabun", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Thai", sans-serif;
-    background:linear-gradient(135deg, var(--bg1), var(--bg2));
-    display:flex; align-items:center; justify-content:center; padding:24px; color:var(--text);
+    margin:0; min-height:100vh;
+    font-family:"Sarabun",system-ui,-apple-system,"Segoe UI",Roboto,Arial,"Noto Sans Thai",sans-serif;
+    color:var(--text);
+    background: radial-gradient(1200px 1200px at 80% -20%, #ffd6e7 0%, var(--bg) 60%);
+    overflow-x:hidden;
   }
-  .card{
-    width:min(720px,96vw); background:var(--card); border-radius:26px; padding:28px 22px 32px;
-    box-shadow:var(--shadow); text-align:center;
-  }
-  h1{margin:.2em 0 .3em; font-size:clamp(1.6rem,4.6vw,2.4rem)}
-  p.lead{opacity:.9; margin:0 0 1.1rem}
-  .buttons{display:flex; justify-content:center; gap:14px; flex-wrap:wrap}
-  button{
-    border:0; border-radius:16px; padding:14px 18px; cursor:pointer; transition:transform .2s, box-shadow .2s, opacity .2s;
-    font-size:clamp(1rem,2.8vw,1.15rem);
-  }
-  #yesBtn{background:linear-gradient(135deg,#ff6b6b,#f06595); color:#fff; box-shadow:0 8px 20px rgba(240,101,149,.4)}
-  #noBtn{background:#fff; color:#444; border:2px solid #e9e9e9; box-shadow:0 6px 16px rgba(0,0,0,.08)}
-  #yesBtn:hover{transform:translateY(-2px) scale(1.03)}
-  #noBtn:hover{transform:translateY(-1px)}
+  .float-heart{ position:fixed; opacity:.35; animation: rise 14s linear infinite; pointer-events:none; filter: blur(.2px)}
+  @keyframes rise{ from{ transform: translateY(110vh) scale(.7) rotate(0) } to{ transform: translateY(-15vh) scale(1.1) rotate(360deg) } }
 
-  /* Special message overlay (กด ได้เลยย) */
-  .overlay,
-  .overlay-reason{
-    position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.35); z-index:50;
-    padding:18px;
-  }
-  .overlay.show,
-  .overlay-reason.show{ display:grid; }
+  .wrap{ width:100%; max-width:1080px; margin:0 auto; padding:28px; display:grid; gap:24px; grid-template-columns: repeat(auto-fit, minm ax(300px, 1fr)); align-items:start; }
+  header{ grid-column:1/-1; text-align:center }
+  h1{ margin:0 0 8px; color:var(--accent); font-weight:900; letter-spacing:.3px }
+  .sub{ color:var(--muted); font-size:14px }
 
+  .toolbar{ grid-column:1/-1; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; padding-bottom: env(safe-area-inset-bottom); }
+  .chip{ border:1.5px solid var(--accent); color:var(--accent); background:transparent; padding:10px 14px; border-radius:999px; font-weight:700; cursor:pointer }
+  .chip.active{ background:var(--accent); color:#fff }
+
+  .card{ background:var(--card); border-radius:18px; padding:18px 18px 24px; box-shadow: 0 18px 60px rgba(0,0,0,.12) }
+  .card h2{ margin:2px 0 8px; font-size:18px }
+
+  .envelope{ width:280px; height:170px; margin:14px auto 10px; position:relative; cursor:pointer; perspective:800px; transition: transform .2s ease; touch-action:none }
+  .tilt:hover{ transform: translateY(-3px) }
+  .env-body{ position:absolute; inset:0; background:var(--pink); border-radius:10px; box-shadow: inset 0 -8px 0 rgba(0,0,0,.07) }
+  .env-flap{ position:absolute; left:0; right:0; top:0; height:0;
+    border-left:140px solid transparent; border-right:140px solid transparent; border-bottom:85px solid var(--pink2);
+    transform-origin: top center; transition: transform .6s cubic-bezier(.2,.7,.2,1.1); backface-visibility:hidden; }
+  .letter-sheet{ position:absolute; left:12px; right:12px; top:60px; height:0; background:#fff; border-radius:10px; overflow:hidden;
+    box-shadow:0 8px 16px rgba(0,0,0,.12); transition: height .6s ease, top .6s ease; }
+  .envelope.open .env-flap{ transform: rotateX(180deg) }
+  .envelope.open .letter-sheet{ height:130px; top:-8px }
+
+  .row-actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:8px }
+  .btn{ border:0; border-radius:999px; padding:12px 16px; font-weight:800; cursor:pointer; background:var(--accent); color:white; box-shadow: 0 10px 24px rgba(214,51,108,.25) }
+  .btn.ghost{ background:transparent; color:var(--accent); border:2px solid var(--accent) }
+
+  .letter{ display:none } /* ใช้ Pop-up A4 แทน */
+
+  .countdown{ margin-top:10px; display:grid; gap:10px; grid-template-columns: 100px 1fr; align-items:center }
+  .progress{ width:100px; height:100px; }
+  .progress circle{ fill:none; stroke-width:10; stroke-linecap:round }
+  .progress .track{ stroke: #eee } [data-theme="dark"] .progress .track{ stroke:#2a2227 }
+  .progress .bar{ stroke: var(--accent); transform: rotate(-90deg); transform-origin:50% 50%; transition: stroke-dashoffset .8s ease }
+  .cd-text{ font-size:14px; color:var(--muted) }
+
+  .hint{ color:var(--muted); font-size:13px; margin-top:6px; text-align:center }
+  .shake{ animation: shake .5s ease } @keyframes shake{
+    10%,90%{ transform: translateX(-1px) } 20%,80%{ transform: translateX(2px) }
+    30%,50%,70%{ transform: translateX(-4px) } 40%,60%{ transform: translateX(4px) } }
+
+  /* ===== A4 POPUP (Fit to screen) ===== */
   .modal{
-    width:min(760px,94vw); background:#fff; border-radius:24px; padding:24px 20px 20px; text-align:center;
-    box-shadow:0 18px 50px rgba(0,0,0,.25); animation:pop .22s ease-out both;
+    position:fixed; inset:0; display:none; align-items:center; justify-content:center;
+    padding: clamp(8px,2vmin,24px);
+    padding-left: calc(clamp(8px,2vmin,24px) + env(safe-area-inset-left));
+    padding-right: calc(clamp(8px,2vmin,24px) + env(safe-area-inset-right));
+    padding-top: calc(clamp(8px,2vmin,24px) + env(safe-area-inset-top));
+    padding-bottom: calc(clamp(8px,2vmin,24px) + env(safe-area-inset-bottom));
+    background: rgba(0,0,0,.6);
+    z-index:60;
   }
-  .modal h2{margin:.1em 0 .35em; color:#e5386d; font-size:clamp(1.5rem,4.5vw,2.2rem)}
-  .modal p{margin:.35em 0; font-size:clamp(1.02rem,2.6vw,1.15rem)}
-  .modal .close{margin-top:14px; padding:10px 16px; border:0; border-radius:12px; background:#111; color:#fff; cursor:pointer}
+  .modal.show{ display:flex }
+  .sheet{
+    background:#fff; color:#222; border-radius:10px; box-shadow: 0 30px 80px rgba(0,0,0,.45);
+    /* ฟิตจอ: อัตราส่วน 210/297, กว้างไม่เกิน 98vw และสูงไม่เกิน 98vh */
+    width: min(98vw, calc(98vh * 210 / 297));
+    aspect-ratio: 210 / 297; /* ความสูงจะตามอัตราส่วนเสมอ → ไม่ล้น 98vh */
+    display:grid; grid-template-rows:auto 1fr; overflow:hidden;
+    max-height: 98vh;  /* ป้องกันเกินความสูงจอ */
+    max-width: 98vw;   /* ป้องกันเกินความกว้างจอ */
+  }
+  .sheet-head{ display:flex; align-items:center; justify-content:space-between; gap:8px;
+    padding:10px 14px; background:#f7f7f7; border-bottom:1px solid #e9e9e9 }
+  .sheet-title{ font-weight:900; color:#c2255c; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+  .sheet-actions{ display:flex; gap:8px }
+  .icon-btn{ border:1px solid #ddd; background:#fff; border-radius:10px; padding:10px 14px; cursor:pointer; font-weight:700 }
+  .icon-btn.print{ background:#111; color:#fff; border-color:#111 }
+  .sheet-body{
+    padding:18px 22px; overflow:auto; line-height:1.75; font-size:16px; background:#fff; position:relative;
+  }
+  .sheet-body .typed{ white-space:pre-wrap }
+  .a4-photos{ display:grid; gap:14px; margin-top:14px }
+  .a4-photos img{ width:100%; border-radius:10px; box-shadow: 0 10px 24px rgba(0,0,0,.12); cursor:zoom-in }
 
-  /* Reason popup detail */
-  .reason-title{font-weight:700; color:#444; margin-bottom:.35rem}
-  .reason-text{font-size:clamp(1.05rem,2.8vw,1.2rem)}
-  .reason-count{margin-top:.35rem; opacity:.6; font-size:.95rem}
+  /* Lightbox */
+  .lightbox{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.88); z-index:70; }
+  .lightbox.show{ display:flex }
+  .lightbox img{ max-width:92vw; max-height:92vh; border-radius:14px; box-shadow: 0 20px 80px rgba(0,0,0,.5) }
+  .lightbox .close{ position:absolute; top:calc(16px + env(safe-area-inset-top)); right:18px; color:white; font-weight:900; font-size:24px; cursor:pointer }
 
-  /* Cute hearts */
-  .hearts{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:60 }
-  .heart{ position:absolute; font-size:22px; animation:fall 3.6s linear forwards; filter:drop-shadow(0 4px 6px rgba(0,0,0,.2)) }
+  /* ===== Mobile tweaks ===== */
+  @media (max-width: 520px){
+    .wrap{ padding:16px; gap:16px }
+    h1{ font-size:22px }
+    .chip{ padding:9px 12px; font-size:14px }
+    .card{ padding:14px }
+    .envelope{ width:220px; height:140px }
+    .env-flap{ border-left:110px solid transparent; border-right:110px solid transparent; border-bottom:70px solid var(--pink2) }
+    .letter-sheet{ left:10px; right:10px; top:52px }
+    .btn{ padding:11px 14px; font-size:14px }
+    .progress{ width:86px; height:86px }
+    .cd-text{ font-size:13px }
+    .sheet-body{ font-size:15px }
+  }
+  /* จอเตี้ย (แนวนอนมือถือ ฯลฯ) → ลด padding ภายในแผ่นเพื่อให้ไม่ล้น */
+  @media (max-height: 520px){
+    .sheet-body{ padding:12px 14px; line-height:1.6 }
+    .icon-btn{ padding:8px 10px }
+  }
 
-  @keyframes pop{ from{transform:scale(.9); opacity:0} to{transform:scale(1); opacity:1} }
-  @keyframes fall{
-    0%{ transform: translateY(-10vh) rotate(0deg); opacity:0 }
-    10%{ opacity:1 }
-    100%{ transform: translateY(110vh) rotate(360deg); opacity:0 }
+  /* Print: แสดงเฉพาะแผ่น A4 */
+  @media print{
+    body{ background:#fff }
+    .wrap, .float-heart, #confetti, .lightbox{ display:none !important }
+    .modal{ display:block !important; background:transparent; padding:0 }
+    .sheet{ width:auto; aspect-ratio:auto; height:auto; box-shadow:none; border-radius:0 }
+    .sheet-head{ display:none }
+    .sheet-body{ background:#fff; overflow:visible }
+    @page{ size: A4; margin:12mm }
   }
 </style>
 </head>
 <body>
-  <main class="card" role="dialog" aria-labelledby="title">
-    <h1 id="title">กลับมาคบกันได้มั้ยครับน้องเพลง 🥺</h1>
-    <p class="lead">ขอโอกาศให้เราได้โตไปข้างๆน้องเพลงอีกครั้งได้มั้ยครับ</p>
+  <!-- floating hearts -->
+  <canvas id="confetti"></canvas>
 
-    <div class="buttons" aria-live="polite">
-      <button id="yesBtn" aria-label="ได้เลยย">ได้เลยย 💘</button>
-      <button id="noBtn" aria-label="ไม่">ไม่ 😅</button>
-    </div>
-  </main>
-
-  <!-- Special message (YES) -->
-  <div class="overlay" id="overlay" aria-hidden="true">
-    <div class="modal" role="alertdialog" aria-labelledby="okTitle">
-      <h2 id="okTitle">ไปบอกโอ๊คเลยย 💖</h2>
-      <p>ขอบคุณที่ให้โอกาสกันอีกครั้งนะ</p>
-      <button class="close" id="close">โอเค</button>
+  <!-- A4 Popup -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+      <div class="sheet-head">
+        <div id="sheetTitle" class="sheet-title">จดหมาย</div>
+        <div class="sheet-actions">
+          <button class="icon-btn print" id="btnPrint">พิมพ์/บันทึก PDF</button>
+          <button class="icon-btn" id="btnClose">ปิด</button>
+        </div>
+      </div>
+      <div class="sheet-body" id="sheetBody"></div>
     </div>
   </div>
 
-  <!-- Reason popup (NO) -->
-  <div class="overlay-reason" id="reasonOverlay" aria-hidden="true">
-    <div class="modal" role="alertdialog" aria-labelledby="reasonTitle">
-      <div class="reason-title" id="reasonTitle">เหตุผลที่ขอคืนดี</div>
-      <div class="reason-text" id="reasonText"></div>
-      <div class="reason-count" id="reasonCount"></div>
-      <button class="close" id="reasonClose">รับทราบ</button>
-    </div>
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <span class="close" aria-label="Close">✕</span>
+    <img alt="">
   </div>
 
-  <!-- Hearts layer -->
-  <div class="hearts" id="hearts"></div>
+  <div class="wrap">
+    <header>
+      <h1>ขอบคุณที่อยู่ด้วยกันมา 7 เดือนนะ 💕</h1>
+      <div class="sub">ขอบคุณช่วงเวลาดีๆที่มีให้เรามาตลอด7เดือนนะครับ</div>
+    </header>
+
+    <div class="toolbar">
+      <button id="toggleTheme" class="chip">สลับโหมดสว่าง/มืด</button>
+      <button id="toggleSound" class="chip">เสียง: ปิด</button>
+      <button id="secretBtn" class="chip">สติกเกอร์หัวใจ 💗</button>
+    </div>
+
+    <!-- ซองเปิดได้ทันที -->
+    <section class="card">
+      <h2>ซองจดหมายเปิดได้ทันที 💌</h2>
+      <div id="envOpen" class="envelope tilt" aria-label="เปิดจดหมายขอบคุณ">
+        <div class="env-body"></div><div class="env-flap"></div><div class="letter-sheet"></div>
+      </div>
+      <div class="row-actions">
+        <button class="btn" id="btnOpenNow">เปิดจดหมาย</button>
+        <button class="btn ghost" id="btnAnim1">แสดง/ซ่อนแอนิเมชันซอง</button>
+      </div>
+      <div id="letter1" class="letter"></div>
+      <div class="hint">แตะ/ลากบนซองเพื่อเอียงแบบ 3D 📱</div>
+    </section>
+
+    <!-- ซองล็อก (ไม่โชว์เวลา) -->
+    <section class="card">
+      <h2>ซองจดหมายที่ยังเปิดไม่ได้ ⏳</h2>
+      <div id="envLocked" class="envelope tilt" aria-label="ซองที่ยังเปิดไม่ได้">
+        <div class="env-body"></div><div class="env-flap"></div><div class="letter-sheet"></div>
+      </div>
+
+      <div class="countdown">
+        <svg class="progress" viewBox="0 0 120 120" width="110" height="110" aria-hidden="true">
+          <circle class="track" cx="60" cy="60" r="48"></circle>
+          <circle class="bar" cx="60" cy="60" r="48" stroke-dasharray="301.59" stroke-dashoffset="301.59"></circle>
+        </svg>
+        <div>
+          <div id="lockedState" class="cd-text"><b>จะเปิดได้ก็ต่อเมื่อดวงดาวของเราทั้ง2จะโคจรมาเจอกัน</b></div>
+          <div id="cdDetail" class="cd-text" style="display:none"></div>
+        </div>
+      </div>
+
+      <div class="row-actions">
+        <button class="btn" id="btnOpenLocked">ลองเปิดดู</button>
+        <button class="btn ghost" id="btnAnim2">แสดง/ซ่อนแอนิเมชันซอง</button>
+      </div>
+
+      <div id="letter2" class="letter"></div>
+      <div class="hint">* กลับมาเมื่อไหร่เราจะเปิดให้เองนะ😉 *</div>
+    </section>
+  </div>
 
 <script>
-  // --- Scaling logic when pressing "ไม่"
-  let yesScale=1.0, noScale=1.0;
-  const YES_GROW=1.15, NO_SHRINK=0.85, NO_MIN=0.35, YES_MAX=3.0;
+/* =======================
+   🔧 CONFIG — แก้ค่าตรงนี้เท่านั้น
+   ======================= */
+const CONFIG = {
+  OPEN_AT: "2025-12-31T21:30", // เวลาเปิด (ไม่แสดงต่อผู้ใช้)
+  LOCKED_TITLE: "เมื่อเราวนมาเจอกันอีกครั้ง 🌏💞",
+  LOCKED_CONTENT:
+`ขอบคุณที่อยู่ข้างๆ กันเสมอ
+ต่อให้โลกหมุนพาเราไกลแค่ไหน เราก็จะวนกลับมาหากัน
+ถึงเวลานั้น… มาเปิดจดหมายนี้พร้อมกันนะ 💫`,
+  LOCKED_IMAGES: [
+    // { src: "images/us-1.jpg", caption: "วันแรกที่เราเจอกัน 💞" },
+  ],
+  AUTO_OPEN: true
+};
 
-  // Reasons list (ตามที่ให้มา)
-  const reasons=[
-    "เราอยากมีกันแบบนี้ต่อไปนานๆ",
-    "เรายังอยากมีน้องเพลงเดินไปข้างๆเรา",
-    "เราไม่อยากปล่อยมือน้องเพลงเลย",
-    "เราจะใส่ใจตัวเองมากขึ้นและจะดูแลน้องเพลงไปพร้อมกัน",
-    "จะไม่เปลี่ยนตัวเองจนเกินไปแล้ว",
-    "เราจะโตขึ้นให้ได้เลยแต่เราอยากให้น้องเพลงเห็นเราที่ค่อยๆโตไปด้วยกันนะ",
-    "เราขอโทษที่เราไม่ยอมบอกอะไรน้องตรงๆ",
-    "เราใช้ชีวิตด้วยกันจริงๆนะ",
-    "เรายังมีอีกหลายๆที่เรายังไม่ได้ไปด้วยกันเลยนะ",
-    "เรายังมีอีกหลายๆอย่างที่เรายังไม่ได้ทำด้วยกันเลยนะ",
-    "เรายังมีอีกหลายๆสัญญาที่เราให้กันไว้แล้วยังไม่ได้ทำให้กันเลยนะ",
-    "กลับมาคบกันเถอะนะครับ"
-  ];
-  let reasonIndex=0;
+const prefersDark = matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+const savedTheme = localStorage.getItem('theme');
+document.documentElement.setAttribute('data-theme', savedTheme || (prefersDark?'dark':'light'));
 
-  // Elements
-  const yesBtn=document.getElementById('yesBtn');
-  const noBtn=document.getElementById('noBtn');
-  const overlay=document.getElementById('overlay');
-  const closeBtn=document.getElementById('close');
+let soundOn = (localStorage.getItem('sound')||'off')==='on';
+const $ = s => document.querySelector(s);
 
-  const reasonOverlay=document.getElementById('reasonOverlay');
-  const reasonClose=document.getElementById('reasonClose');
-  const reasonText=document.getElementById('reasonText');
-  const reasonCount=document.getElementById('reasonCount');
+const envOpen = $('#envOpen'), envLocked = $('#envLocked');
+const btnOpenNow = $('#btnOpenNow'), btnOpenLocked = $('#btnOpenLocked');
+const btnAnim1 = $('#btnAnim1'), btnAnim2 = $('#btnAnim2');
+const toggleTheme = $('#toggleTheme'), toggleSound = $('#toggleSound'), secretBtn = $('#secretBtn');
 
-  const hearts=document.getElementById('hearts');
+const modal = $('#modal'), sheetTitle = $('#sheetTitle'), sheetBody = $('#sheetBody');
+const btnPrint = $('#btnPrint'), btnClose = $('#btnClose');
+const lightbox = $('#lightbox'), lightboxImg = lightbox.querySelector('img'), lightboxClose = lightbox.querySelector('.close');
 
-  function applyScales(){
-    yesBtn.style.transform=`scale(${yesScale})`;
-    noBtn.style.transform=`scale(${noScale})`;
-    noBtn.style.opacity=Math.max(0.45, noScale);
-    yesBtn.style.boxShadow=`0 ${Math.min(14, 6*yesScale)}px ${Math.min(32, 20*yesScale)}px rgba(240,101,149,.45)`;
+toggleSound.classList.toggle('active', soundOn);
+toggleSound.textContent = `เสียง: ${soundOn ? 'เปิด' : 'ปิด'}`;
+
+// floating hearts (ลดจำนวนบนมือถือ)
+(function hearts(){
+  const coarse = matchMedia('(pointer:coarse)').matches;
+  const n = coarse ? 10 : 14;
+  for(let i=0;i<n;i++){
+    const h=document.createElement('div'); h.className='float-heart'; h.textContent='💗';
+    h.style.left = (Math.random()*100)+'vw';
+    h.style.fontSize = (18+Math.random()*26)+'px';
+    h.style.animationDelay = (Math.random()*-14)+'s';
+    document.body.appendChild(h);
   }
+})();
 
-  function sprinkleHearts(count=80){
-    hearts.innerHTML="";
-    const emojis=["💖","💘","❤️","💞","💓","💗","💕"];
-    const vw=Math.max(document.documentElement.clientWidth||0, window.innerWidth||0);
-    for(let i=0;i<count;i++){
-      const s=document.createElement('span');
-      s.className='heart';
-      s.textContent=emojis[Math.floor(Math.random()*emojis.length)];
-      s.style.left=(Math.random()*vw)+"px";
-      s.style.animationDuration=(3+Math.random()*2)+"s";
-      s.style.animationDelay=(Math.random()*0.8)+"s";
-      s.style.fontSize=(18+Math.random()*22)+"px";
-      hearts.appendChild(s);
+// Tilt (mouse + touch)
+function bindTilt(el){
+  let rect;
+  const maxX = 10, maxY = 8;
+  function update(clientX, clientY){
+    if(!rect) rect = el.getBoundingClientRect();
+    const x = (clientX - rect.left) / rect.width - .5;
+    const y = (clientY - rect.top) / rect.height - .5;
+    el.style.transform = `rotateX(${(-y*maxY).toFixed(2)}deg) rotateY(${(x*maxX).toFixed(2)}deg) translateY(-3px)`;
+  }
+  el.addEventListener('pointerenter', ()=> rect = el.getBoundingClientRect());
+  el.addEventListener('pointermove', e=>{
+    if (e.pointerType==='touch' && e.pressure===0) return;
+    update(e.clientX, e.clientY);
+  });
+  el.addEventListener('pointerdown', e=>{ el.setPointerCapture?.(e.pointerId); rect = el.getBoundingClientRect(); update(e.clientX, e.clientY); });
+  el.addEventListener('pointerup', ()=> el.style.transform = '');
+  el.addEventListener('pointerleave', ()=> el.style.transform = '');
+}
+bindTilt(envOpen); bindTilt(envLocked);
+
+// Typewriter
+function typewriter(el, text, speed=16, done){
+  el.innerHTML = '<div class="typed"></div>';
+  const target = el.querySelector('.typed');
+  const esc = s => s.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  let i=0;
+  (function step(){
+    if(i<=text.length){
+      target.innerHTML = esc(text.slice(0,i)).replace(/\n/g,'<br>');
+      i++; setTimeout(step, speed);
+    } else { if (typeof done==='function') done(); }
+  })();
+}
+
+// Audio chime
+let audioCtx=null;
+function chime(){
+  if(!soundOn) return;
+  try{
+    audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)();
+    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.connect(g); g.connect(audioCtx.destination); o.type='triangle'; o.frequency.value=880;
+    g.gain.setValueAtTime(0.0001,audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.2,audioCtx.currentTime+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.35);
+    o.start(); o.stop(audioCtx.currentTime+0.4);
+    if (navigator.vibrate) navigator.vibrate(20);
+  }catch{}
+}
+
+// Confetti (เบาลงบนมือถือ)
+const cvs = document.getElementById('confetti'), ctx = cvs.getContext('2d'); let parts=[];
+function resize(){ cvs.width=innerWidth; cvs.height=innerHeight } addEventListener('resize',resize); resize();
+function blast(x=innerWidth/2,y=innerHeight/3,n=120){
+  const coarse = matchMedia('(pointer:coarse)').matches;
+  const count = coarse ? Math.floor(n*0.55) : n;
+  for(let i=0;i<count;i++){
+    parts.push({x,y,vx:(Math.random()-.5)*6,vy:(Math.random()-1.2)*8-4,g:.15+Math.random()*.25,s:4+Math.random()*6,a:1,hue:Math.floor(Math.random()*360)});
+  }
+}
+;(function loop(){ ctx.clearRect(0,0,cvs.width,cvs.height); parts=parts.filter(p=>p.a>0&&p.y<innerHeight+40);
+  for(const p of parts){ p.vx*=0.995; p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; p.a*=0.986; ctx.globalAlpha=Math.max(0,p.a); ctx.fillStyle=`hsl(${p.hue} 90% 60%)`; ctx.fillRect(p.x,p.y,p.s,p.s);} requestAnimationFrame(loop); })();
+
+// Lock body scroll when modal open
+function lockScroll(lock){ document.body.style.overflow = lock ? 'hidden' : ''; }
+
+// A4 Popup
+function openA4(title, text, images){
+  sheetTitle.textContent = title || 'จดหมาย';
+  sheetBody.scrollTop = 0;
+  sheetBody.innerHTML = '';
+  typewriter(sheetBody, (title?`📬 ${title}\n\n`:'') + (text||''), 16, ()=>{
+    if (Array.isArray(images) && images.length){
+      const grid = document.createElement('div'); grid.className = 'a4-photos';
+      images.forEach(({src, caption=''})=>{
+        const fig = document.createElement('figure'); fig.style.margin='0';
+        const img = document.createElement('img'); img.loading='lazy'; img.decoding='async'; img.src=src; img.alt=caption||'';
+        const cap = document.createElement('figcaption'); cap.style.fontSize='13px'; cap.style.color='#6b6b6b'; cap.style.textAlign='center'; cap.style.marginTop='6px'; cap.textContent = caption||'';
+        img.addEventListener('click', ()=> openLightbox(src, caption||''));
+        fig.appendChild(img); if (caption) fig.appendChild(cap);
+        grid.appendChild(fig);
+      });
+      sheetBody.appendChild(grid);
     }
-    setTimeout(()=>{hearts.innerHTML="";},6000);
+  });
+  modal.classList.add('show'); modal.setAttribute('aria-hidden','false'); lockScroll(true);
+}
+function closeA4(){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); lockScroll(false); }
+btnClose.addEventListener('click', closeA4);
+modal.addEventListener('click', (e)=>{ if (e.target === modal) closeA4(); });
+btnPrint.addEventListener('click', ()=> window.print());
+
+// Lightbox
+let lbStartY=null;
+function openLightbox(src, alt){ lightboxImg.src = src; lightboxImg.alt = alt||''; lightbox.classList.add('show'); lightbox.setAttribute('aria-hidden','false'); }
+function closeLightbox(){ lightbox.classList.remove('show'); lightbox.setAttribute('aria-hidden','true'); setTimeout(()=> (lightboxImg.src=''), 200); }
+lightbox.addEventListener('click', (e)=>{ if (e.target===lightbox || e.target===lightboxClose) closeLightbox(); });
+lightbox.addEventListener('pointerdown', e=>{ lbStartY = e.clientY; });
+lightbox.addEventListener('pointerup', e=>{ if (lbStartY!=null && e.clientY - lbStartY > 60) closeLightbox(); lbStartY=null; });
+addEventListener('keydown', (e)=>{ if (e.key==='Escape' && lightbox.classList.contains('show')) closeLightbox(); });
+
+// Open-now -> A4
+const OPEN_TEXT =
+`💌 ขอบคุณช่วงเวลาดีๆที่มีให้เรามาตลอด7เดือนนะครับ
+รอบนี้อาจจะมาช้าไปหน่อยแล้วก็ไม่รู้ว่าเราจะได้ทำให้อีก
+เมื่อไหร่แต่ก็จะรอน้องกลับมาเปิดจดหมายอีกซองพร้อมๆ
+กับเรานะครับ
+เราไม่รู้หรอกว่าที่ผ่านมาน้องจะรักเราจริงรึป่าวหรือว่าจะแอบคุยกับใคร
+แต่เรามีความสุขมากๆตลอดเวลาที่ผ่านมาเรารักน้องมากๆจาก
+ได้เท่านี้เลยนะแต่ว่าการจากกันครั้งนี้เราไม่บอกลาหรอกนะ:)
+เพราะเราคิดว่ายังไงเราก็ต้องกลับมาเจอกันเราจะรอวันนั้นนะ
+เพราะว่าเรายังมีอีกหลายๆที่ ที่เราสัญญาว่าจะไปด้วยกัน
+เรายังไม่ได้ไปด้วยกันเลยนะ ยังมีอีกหลายๆอย่างที่ยังไม่
+ได้ทำด้วยกันเลยเพราะงั้นเราจะรอน้องกลับมาทำไปพร้อม
+กับเรานะครับ
+รักน้องเพลงเสมอนะ
+จากโอ๊ค
+ปล.เราตั้งใจเขียนจดหมายทั้ง2ฉบับนี้มากๆเลยนะครับ
+อยากให้น้องได้อ่านทั้ง2ฉบับเลยแต่ว่าอีกฉบับนึงเราขอ
+เก็บไว้เปิดพร้อมกับน้องเพลงนะครับ😉`;
+let anim1=false, anim2=false;
+btnAnim1.addEventListener('click', ()=>{ anim1=!anim1; envOpen.classList.toggle('open',anim1); });
+btnAnim2.addEventListener('click', ()=>{ anim2=!anim2; envLocked.classList.toggle('open',anim2); });
+btnOpenNow.addEventListener('click', ()=>{
+  envOpen.classList.add('open'); anim1=true;
+  blast(innerWidth/2, innerHeight*0.35, 180); chime();
+  openA4('จดหมายถึงน้องเพลง 💌', OPEN_TEXT, []);
+});
+envOpen.addEventListener('click', ()=> btnOpenNow.click());
+
+// Locked logic (ไม่แสดงเวลา)
+const target = new Date(CONFIG.OPEN_AT);
+const CIRC = 2*Math.PI*48;
+const bar = document.querySelector('.progress .bar');
+bar.setAttribute('stroke-dasharray', CIRC.toFixed(2));
+bar.setAttribute('stroke-dashoffset', CIRC.toFixed(2));
+
+function updateRing(){
+  if (isNaN(target)) return;
+  const now = new Date(); const diff = target-now;
+  if (diff<=0){
+    bar.setAttribute('stroke-dashoffset','0');
+    if (CONFIG.AUTO_OPEN) showLockedLetter(true);
+    return;
+  } else {
+    if (!updateRing.start) updateRing.start = now.getTime();
+    const total = target.getTime() - updateRing.start;
+    const passed = now.getTime() - updateRing.start;
+    const ratio = Math.max(0, Math.min(1, passed/Math.max(1,total)));
+    bar.setAttribute('stroke-dashoffset', (CIRC*(1-ratio)).toFixed(2));
+    setTimeout(updateRing, 1000);
   }
+}
+updateRing();
 
-  // Show/Hide helpers
-  function show(el){ el.classList.add('show'); el.setAttribute('aria-hidden','false'); }
-  function hide(el){ el.classList.remove('show'); el.setAttribute('aria-hidden','true'); }
+let lockedShown = false;
+function showLockedLetter(fromAuto=false){
+  if (lockedShown) return;
+  lockedShown = true;
+  envLocked.classList.add('open'); anim2=true;
+  blast(innerWidth/2, innerHeight*0.25, 150); chime();
+  openA4(CONFIG.LOCKED_TITLE, CONFIG.LOCKED_CONTENT, CONFIG.LOCKED_IMAGES);
+  if (!fromAuto && navigator.vibrate) navigator.vibrate(20);
+}
+btnOpenLocked.addEventListener('click', ()=>{
+  if (isNaN(target)) return;
+  if (new Date()>=target){ showLockedLetter(false); }
+  else {
+    envLocked.classList.add('shake');
+    setTimeout(()=>envLocked.classList.remove('shake'),520);
+    const r=envLocked.getBoundingClientRect(); blast(r.left+r.width/2, r.top+20);
+    if (navigator.vibrate) navigator.vibrate([20,20,10]);
+  }
+});
+envLocked.addEventListener('click', ()=> btnOpenLocked.click());
 
-  // Click "ไม่" -> show reason popup (with counter)
-  noBtn.addEventListener('click', ()=>{
-    const idx=reasonIndex % reasons.length;
-    reasonText.textContent="เพราะว่า… "+reasons[idx];
-    reasonCount.textContent=`(${idx+1}/${reasons.length})`;
-    show(reasonOverlay);
+// Theme + sound
+toggleTheme.addEventListener('click', ()=>{
+  const cur=document.documentElement.getAttribute('data-theme'); const next=cur==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',next); localStorage.setItem('theme', next);
+  toggleTheme.classList.toggle('active', next==='dark');
+});
+toggleTheme.classList.toggle('active', (savedTheme|| (prefersDark?'dark':'light'))==='dark');
 
-    // Scale buttons each time
-    yesScale=Math.min(YES_MAX, yesScale*YES_GROW);
-    noScale=Math.max(NO_MIN, noScale*NO_SHRINK);
-    applyScales();
+toggleSound.addEventListener('click', ()=>{
+  soundOn=!soundOn; toggleSound.classList.toggle('active', soundOn);
+  toggleSound.textContent=`เสียง: ${soundOn?'เปิด':'ปิด'}`; localStorage.setItem('sound', soundOn?'on':'off'); if (soundOn) chime();
+});
 
-    reasonIndex++;
-
-    // Subtle button tap anim
-    noBtn.animate([{transform:`scale(${noScale})`},{transform:`scale(${noScale*0.95})`},{transform:`scale(${noScale})`}], {duration:180});
-    yesBtn.animate([{transform:`scale(${yesScale*0.98})`},{transform:`scale(${yesScale})`}], {duration:180});
-  });
-
-  // Close reason popup
-  reasonClose.addEventListener('click', ()=> hide(reasonOverlay));
-  reasonOverlay.addEventListener('click', (e)=>{ if(e.target===reasonOverlay) hide(reasonOverlay); });
-
-  // Click "ได้เลยย" -> special message + hearts
-  yesBtn.addEventListener('click', ()=>{
-    show(overlay);
-    sprinkleHearts(90);
-  });
-  closeBtn.addEventListener('click', ()=> hide(overlay));
-  overlay.addEventListener('click', (e)=>{ if(e.target===overlay) hide(overlay); });
-
-  // Initial
-  applyScales();
-
-  // Keep button within screen when scaled big
-  const ro=new ResizeObserver(()=>{
-    const maxButtonWidth=Math.min(window.innerWidth*0.9,640);
-    yesBtn.style.maxWidth=maxButtonWidth+"px";
-  });
-  ro.observe(document.body);
+// Secret hearts
+const code=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','KeyB','KeyA']; let pos=0;
+addEventListener('keydown', e=>{ pos = (e.code===code[pos]) ? pos+1 : 0; if (pos===code.length){ pos=0; stickerBurst(); }});
+secretBtn.addEventListener('click', stickerBurst);
+function stickerBurst(){
+  for(let i=0;i<20;i++){
+    const s=document.createElement('div'); s.textContent=['💖','💘','💝','💗','💞'][Math.floor(Math.random()*5)];
+    s.style.position='fixed'; s.style.left=(10+Math.random()*80)+'vw'; s.style.top='-10vh';
+    s.style.fontSize=(26+Math.random()*24)+'px'; s.style.transition='transform 2s ease, opacity 2s ease';
+    s.style.transform='translateY(0) rotate(0)'; s.style.opacity='1'; s.style.pointerEvents='none'; document.body.appendChild(s);
+    requestAnimationFrame(()=>{ s.style.transform=`translateY(${110+Math.random()*20}vh) rotate(${(Math.random()*720-360).toFixed(0)}deg)`; s.style.opacity='0'; });
+    setTimeout(()=> s.remove(), 2200);
+  }
+  blast(innerWidth/2, innerHeight*0.2, 220); chime();
+}
 </script>
 </body>
 </html>
