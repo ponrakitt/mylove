@@ -1,439 +1,154 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" data-theme="auto">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>ขอบคุณสำหรับ7เดือนนะ</title>
+<title>จดหมายครบรอบ 7 เดือน</title>
+<meta name="theme-color" content="#ffd9e6"/>
+
 <style>
   :root{
-    --bg:#fff0f6; --card:#ffffff; --text:#3a2a33; --muted:#6b6b6b;
-    --pink:#ffcad4; --pink2:#ff99ac; --accent:#d6336c; --ok:#17a34a;
+    --bg:#fff6fa; --card:#ffffff; --text:#3a2a33; --muted:#6b6b6b;
+    --accent:#ff6b9e; --accent2:#ffcad4; --ok:#16a34a; --lock:#7c3aed;
+    --ring:rgba(255,107,158,.35);
+    --shadow:0 10px 30px rgba(0,0,0,.10);
+    --radius:24px; --vh:1vh;
   }
-  [data-theme="dark"]{
-    --bg:#0f0a0c; --card:#161117; --text:#f6e9f0; --muted:#b9a8b1;
-    --pink:#7a2a3a; --pink2:#b03c59; --accent:#ff6b9e; --ok:#34d399;
+  @media (prefers-color-scheme: dark){
+    [data-theme="auto"]{
+      --bg:#0f0a11; --card:#17121a; --text:#f5e9f1; --muted:#bca9b5;
+      --accent:#ff8fb5; --accent2:#4d2838; --ok:#34d399; --lock:#a78bfa;
+      --ring:rgba(255,143,181,.25); --shadow:0 10px 30px rgba(0,0,0,.45);
+    }
   }
   *{box-sizing:border-box}
-
-  /* ✅ ไม่ให้หน้าเลื่อน */
-  html, body{ height:100%; }
+  html,body{height:100%; margin:0}
   body{
-    margin:0;
-    min-height:100svh;
-    display:grid; place-items:center; /* จัดให้อยู่กลางจอ */
-    font-family:"Sarabun",system-ui,-apple-system,"Segoe UI",Roboto,Arial,"Noto Sans Thai",sans-serif;
-    color:var(--text);
-    background: radial-gradient(1200px 1200px at 80% -20%, #ffd6e7 0%, var(--bg) 60%);
-    overflow:hidden; /* ล็อกสกอลล์ */
+    font-family: ui-rounded, "Noto Sans Thai", "Sarabun", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background:
+      radial-gradient(1200px 1200px at 100% -10%, var(--accent2) 0%, transparent 60%),
+      radial-gradient(900px 900px at -10% 110%, var(--accent2) 0%, transparent 60%),
+      var(--bg);
+    color:var(--text); line-height:1.6;
   }
-
-  .float-heart{ position:fixed; opacity:.35; animation: rise 14s linear infinite; pointer-events:none; filter: blur(.2px)}
-  @keyframes rise{ from{ transform: translateY(110vh) scale(.7) rotate(0) } to{ transform: translateY(-15vh) scale(1.1) rotate(360deg) } }
-
-  /* พื้นที่คอนเทนต์หลัก: จะถูกสเกลให้พอดีจอด้วย JS */
-  .wrap{
-    width:100%; max-width:1080px;
-    margin:0 auto; padding:28px;
-    display:grid; gap:24px;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* แก้ typo แล้ว */
-    align-items:start;
-    transform-origin:center center; /* ให้สเกลจากกึ่งกลาง */
-    will-change: transform;
+  .wrap{ min-height:calc(var(--vh)*100); display:grid; place-items:center; padding:20px; }
+  .card{ width:min(980px,100%); background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
+         border:1px solid rgba(255,255,255,.12); padding:clamp(16px,3vw,28px); }
+  .title{ display:flex; align-items:center; justify-content:center; gap:10px; font-size:clamp(22px,4.5vw,34px); font-weight:800; margin:0 0 4px; }
+  .subtitle{ text-align:center; color:var(--muted); margin:0 0 18px; font-size:clamp(12px,2.6vw,14px); }
+  .grid{ display:grid; grid-template-columns:1fr; gap:14px; } @media (min-width:760px){ .grid{ grid-template-columns:1fr 1fr; } }
+  .letter-card{ background:linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.65)), var(--card);
+                border:1px solid rgba(0,0,0,.06); border-radius:20px; padding:18px; position:relative; overflow:hidden; }
+  .letter-card::after{ content:""; position:absolute; inset:0; pointer-events:none;
+                       background:radial-gradient(400px 120px at 80% 0%, var(--ring), transparent 60%),
+                                  radial-gradient(220px 90px at 10% 100%, var(--ring), transparent 60%);
+                       mix-blend-mode:plus-lighter; }
+  .badge{ display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:14px; background:rgba(255,255,255,.6);
+          border:1px dashed rgba(0,0,0,.15); padding:6px 10px; border-radius:999px; backdrop-filter:blur(6px); }
+  .h{ font-size:clamp(18px,2.8vw,22px); font-weight:800; margin:10px 0 6px; }
+  .muted{ color:var(--muted); font-size:13px }
+  .btn{ appearance:none; border:0; cursor:pointer; background:linear-gradient(180deg, var(--accent), #ff4f8f); color:#fff;
+        font-weight:800; letter-spacing:.2px; border-radius:14px; padding:12px 16px; width:100%;
+        box-shadow:0 8px 18px rgba(255,79,143,.35); transition:transform .06s ease, box-shadow .2s ease, filter .2s ease; }
+  .btn:hover{ transform:translateY(-1px); filter:brightness(1.02) } .btn:active{ transform:translateY(1px) }
+  .btn-ghost{ background:transparent; color:var(--text); border:1px solid rgba(0,0,0,.15); box-shadow:none; }
+  .lock{ color:var(--lock); font-weight:900; display:inline-flex; align-items:center; gap:8px; }
+  .ok{ color:var(--ok); font-weight:800 }
+  .row{ display:flex; gap:8px } .row>*{ flex:1 }
+  .modal{ position:fixed; inset:0; display:none; place-items:center; padding:18px; background:rgba(0,0,0,.45); z-index:50; }
+  .modal.open{ display:grid; }
+  .paper{ width:min(760px,100%); max-height:min(85vh, calc(var(--vh)*85)); background:#fff; color:#2c1f25; border-radius:18px; box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column; }
+  @media (prefers-color-scheme: dark){ .paper{ background:#fffdfc; color:#2d2228; } }
+  .paper-head{ padding:14px 16px; display:flex; align-items:center; justify-content:space-between; background:repeating-linear-gradient(-45deg,#ffd9e6,#ffd9e6 10px,#ffe8f0 10px,#ffe8f0 20px); }
+  .paper-title{ font-weight:900; }
+  .x{ border:0; background:transparent; font-size:22px; cursor:pointer; line-height:1; }
+  .paper-body{ padding:20px; overflow:auto; background:linear-gradient(transparent 38px, rgba(255,107,158,.06) 38px) 0 0/100% 40px, #fff; }
+  /* Media (images) */
+  .media{ display:grid; gap:10px; margin:0 0 12px 0; }
+  .media img{ width:100%; display:block; border-radius:14px; }
+  .media .cap{ font-size:12px; color:#7a6b73; margin-top:2px; }
+  @media (min-width:680px){
+    .media.grid2{ grid-template-columns:1fr 1fr; }
   }
-  header{ grid-column:1/-1; text-align:center }
-  h1{ margin:0 0 8px; color:var(--accent); font-weight:900; letter-spacing:.3px }
-  .sub{ color:var(--muted); font-size:14px }
-
-  .toolbar{ grid-column:1/-1; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; padding-bottom: env(safe-area-inset-bottom); }
-  .chip{ border:1.5px solid var(--accent); color:var(--accent); background:transparent; padding:10px 14px; border-radius:999px; font-weight:700; cursor:pointer }
-  .chip.active{ background:var(--accent); color:#fff }
-
-  .card{ background:var(--card); border-radius:18px; padding:18px 18px 20px; box-shadow: 0 18px 60px rgba(0,0,0,.12) }
-  .card h2{ margin:2px 0 8px; font-size:18px }
-
-  .envelope{ width:280px; height:170px; margin:10px auto 8px; position:relative; cursor:pointer; perspective:800px; transition: transform .2s ease; touch-action:none }
-  .tilt:hover{ transform: translateY(-3px) }
-  .env-body{ position:absolute; inset:0; background:var(--pink); border-radius:10px; box-shadow: inset 0 -8px 0 rgba(0,0,0,.07) }
-  .env-flap{ position:absolute; left:0; right:0; top:0; height:0;
-    border-left:140px solid transparent; border-right:140px solid transparent; border-bottom:85px solid var(--pink2);
-    transform-origin: top center; transition: transform .6s cubic-bezier(.2,.7,.2,1.1); backface-visibility:hidden; }
-  .letter-sheet{ position:absolute; left:12px; right:12px; top:60px; height:0; background:#fff; border-radius:10px; overflow:hidden;
-    box-shadow:0 8px 16px rgba(0,0,0,.12); transition: height .6s ease, top .6s ease; }
-  .envelope.open .env-flap{ transform: rotateX(180deg) }
-  .envelope.open .letter-sheet{ height:130px; top:-8px }
-
-  .row-actions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:6px }
-  .btn{ border:0; border-radius:999px; padding:12px 16px; font-weight:800; cursor:pointer; background:var(--accent); color:white; box-shadow: 0 10px 24px rgba(214,51,108,.25) }
-  .btn.ghost{ background:transparent; color:var(--accent); border:2px solid var(--accent) }
-
-  .letter{ display:none } /* ใช้ Pop-up A4 แทน */
-
-  .countdown{ margin-top:8px; display:grid; gap:10px; grid-template-columns: 90px 1fr; align-items:center }
-  .progress{ width:90px; height:90px; }
-  .progress circle{ fill:none; stroke-width:10; stroke-linecap:round }
-  .progress .track{ stroke: #eee } [data-theme="dark"] .progress .track{ stroke:#2a2227 }
-  .progress .bar{ stroke: var(--accent); transform: rotate(-90deg); transform-origin:50% 50%; transition: stroke-dashoffset .8s ease }
-  .cd-text{ font-size:14px; color:var(--muted) }
-
-  .hint{ color:var(--muted); font-size:13px; margin-top:4px; text-align:center }
-  .shake{ animation: shake .5s ease } @keyframes shake{
-    10%,90%{ transform: translateX(-1px) } 20%,80%{ transform: translateX(2px) }
-    30%,50%,70%{ transform: translateX(-4px) } 40%,60%{ transform: translateX(4px) } }
-
-  /* ===== A4 POPUP (Fit to screen, no scroll) ===== */
-  .modal{
-    position:fixed; inset:0; display:none; align-items:center; justify-content:center;
-    padding: clamp(8px,2vmin,24px);
-    padding-left: calc(clamp(8px,2vmin,24px) + env(safe-area-inset-left));
-    padding-right: calc(clamp(8px,2vmin,24px) + env(safe-area-inset-right));
-    padding-top: calc(clamp(8px,2vmin,24px) + env(safe-area-inset-top));
-    padding-bottom: calc(clamp(8px,2vmin,24px) + env(safe-area-inset-bottom));
-    background: rgba(0,0,0,.6);
-    z-index:60;
-  }
-  .modal.show{ display:flex }
-  .sheet{
-    background:#fff; color:#222; border-radius:10px; box-shadow: 0 30px 80px rgba(0,0,0,.45);
-    width: min(98vw, calc(98vh * 210 / 297));
-    aspect-ratio: 210 / 297;
-    display:grid; grid-template-rows:auto 1fr; overflow:hidden;
-    max-height: 98vh; max-width: 98vw;
-  }
-  .sheet-head{ display:flex; align-items:center; justify-content:space-between; gap:8px;
-    padding:10px 14px; background:#f7f7f7; border-bottom:1px solid #e9e9e9 }
-  .sheet-title{ font-weight:900; color:#c2255c; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
-  .sheet-actions{ display:flex; gap:8px }
-  .icon-btn{ border:1px solid #ddd; background:#fff; border-radius:10px; padding:10px 14px; cursor:pointer; font-weight:700 }
-  .icon-btn.print{ background:#111; color:#fff; border-color:#111 }
-  .sheet-body{
-    padding:18px 22px; background:#fff; position:relative;
-    overflow:hidden; /* ✅ ไม่ให้มีสกอลล์ในแผ่น */
-  }
-  /* คอนเทนต์ด้านในจะถูก scale ให้พอดีโดย JS */
-  .content-wrap{ transform-origin: top left; }
-  .sheet-body .typed{ white-space:pre-wrap }
-  .a4-photos{ display:grid; gap:14px; margin-top:14px }
-  .a4-photos img{ width:100%; border-radius:10px; box-shadow: 0 10px 24px rgba(0,0,0,.12); cursor:zoom-in }
-
-  /* Lightbox */
-  .lightbox{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.88); z-index:70; }
-  .lightbox.show{ display:flex }
-  .lightbox img{ max-width:92vw; max-height:92vh; border-radius:14px; box-shadow: 0 20px 80px rgba(0,0,0,.5) }
-  .lightbox .close{ position:absolute; top:calc(16px + env(safe-area-inset-top)); right:18px; color:white; font-weight:900; font-size:24px; cursor:pointer }
-
-  /* ===== Mobile tweaks ===== */
-  @media (max-width: 520px){
-    .wrap{ padding:16px; gap:16px }
-    h1{ font-size:22px }
-    .chip{ padding:9px 12px; font-size:14px }
-    .card{ padding:14px }
-    .envelope{ width:220px; height:140px }
-    .env-flap{ border-left:110px solid transparent; border-right:110px solid transparent; border-bottom:70px solid var(--pink2) }
-    .letter-sheet{ left:10px; right:10px; top:52px }
-    .btn{ padding:11px 14px; font-size:14px }
-    .progress{ width:80px; height:80px }
-    .cd-text{ font-size:13px }
-    .sheet-body{ font-size:15px }
-  }
-  @media (max-height: 520px){
-    .sheet-body{ padding:12px 14px; }
-    .icon-btn{ padding:8px 10px }
-  }
-
-  /* Print */
-  @media print{
-    body{ background:#fff }
-    .wrap, .float-heart, #confetti, .lightbox{ display:none !important }
-    .modal{ display:block !important; background:transparent; padding:0 }
-    .sheet{ width:auto; aspect-ratio:auto; height:auto; box-shadow:none; border-radius:0 }
-    .sheet-head{ display:none }
-    .sheet-body{ background:#fff; overflow:visible }
-    @page{ size: A4; margin:12mm }
-  }
+  .content{ white-space:pre-wrap; font-size:clamp(14px,2.4vw,16px); }
+  .hint{ font-size:12px; color:#7a6b73; margin-top:10px; }
+  .toast{ position:fixed; left:50%; bottom:18px; transform:translateX(-50%); background:#111; color:#fff; padding:10px 14px; border-radius:999px; box-shadow:0 8px 18px rgba(0,0,0,.35); font-size:13px; display:none; z-index:60; }
+  .toast.show{ display:block; animation:fade .25s ease-out }
+  @keyframes fade{ from{ transform:translateX(-50%) translateY(6px); opacity:0 } }
 </style>
 </head>
 <body>
-  <!-- floating hearts -->
-  <canvas id="confetti"></canvas>
+<div class="wrap">
+  <div class="card">
+    <h1 class="title">💖 ครบรอบ 7 เดือน 💖</h1>
+    <p class="subtitle">เว็บจดหมาย 2 ฉบับ — ฉบับที่ 1 อ่านได้เลย • ฉบับที่ 2 รอเปิดพร้อมกันในวันที่กำหนด</p>
 
-  <!-- A4 Popup -->
-  <div id="modal" class="modal" aria-hidden="true">
-    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
-      <div class="sheet-head">
-        <div id="sheetTitle" class="sheet-title">จดหมาย</div>
-        <div class="sheet-actions">
-          <button class="icon-btn print" id="btnPrint">พิมพ์/บันทึก PDF</button>
-          <button class="icon-btn" id="btnClose">ปิด</button>
+    <div class="grid">
+      <!-- Letter 1 -->
+      <section class="letter-card" id="card1">
+        <span class="badge">💌 จดหมายฉบับที่ 1</span>
+        <h3 class="h">“ขอบคุณช่วงเวลาดี ๆ”</h3>
+        <p class="muted">พร้อมเปิดอ่านได้ทันที</p>
+        <div class="row" style="margin-top:10px">
+          <button class="btn" id="open1">เปิดจดหมายฉบับที่ 1</button>
         </div>
-      </div>
-      <div class="sheet-body" id="sheetBody"></div>
+      </section>
+
+      <!-- Letter 2 -->
+      <section class="letter-card" id="card2">
+        <span class="badge lock">🔒 จดหมายฉบับที่ 2 (ล็อกอยู่)</span>
+        <h3 class="h">“เก็บไว้เปิดพร้อมกัน”</h3>
+        <p class="muted" id="openAtWrap">จะเปิดได้ใน: <span id="openAt"></span></p>
+        <div id="countdownWrap" style="margin:8px 0 6px 0">
+          <span class="countdown" id="countdown">กำลังคำนวณเวลา...</span>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <button class="btn btn-ghost" id="open2">เปิดจดหมายฉบับที่ 2</button>
+        </div>
+        <p class="muted" id="lockNote" style="margin-top:8px">*ยังเปิดไม่ได้จนกว่าเราจะคบกันใหม่นะ</p>
+      </section>
     </div>
   </div>
+</div>
 
-  <!-- Lightbox -->
-  <div id="lightbox" class="lightbox" aria-hidden="true">
-    <span class="close" aria-label="Close">✕</span>
-    <img alt=""/>
-  </div>
-
-  <div class="wrap" id="wrap">
-    <header>
-      <h1>ขอบคุณที่อยู่ด้วยกันมา 7 เดือนนะ 💕</h1>
-      <div class="sub">ขอบคุณช่วงเวลาดีๆที่มีให้เรามาตลอด7เดือนนะครับ</div>
-    </header>
-
-    <div class="toolbar">
-      <button id="toggleTheme" class="chip">สลับโหมดสว่าง/มืด</button>
-      <button id="toggleSound" class="chip">เสียง: ปิด</button>
-      <button id="secretBtn" class="chip">สติกเกอร์หัวใจ 💗</button>
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="paper" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="paper-head">
+      <strong class="paper-title" id="modalTitle">จดหมาย</strong>
+      <button class="x" id="close" aria-label="ปิดหน้าต่าง">✕</button>
     </div>
-
-    <!-- ซองเปิดได้ทันที -->
-    <section class="card">
-      <h2>ซองจดหมายเปิดได้ทันที 💌</h2>
-      <div id="envOpen" class="envelope tilt" aria-label="เปิดจดหมายขอบคุณ">
-        <div class="env-body"></div><div class="env-flap"></div><div class="letter-sheet"></div>
-      </div>
-      <div class="row-actions">
-        <button class="btn" id="btnOpenNow">เปิดจดหมาย</button>
-        <button class="btn ghost" id="btnAnim1">แสดง/ซ่อนแอนิเมชันซอง</button>
-      </div>
-      <div id="letter1" class="letter"></div>
-      <div class="hint">แตะ/ลากบนซองเพื่อเอียงแบบ 3D 📱</div>
-    </section>
-
-    <!-- ซองล็อก (ไม่โชว์เวลา) -->
-    <section class="card">
-      <h2>ซองจดหมายที่ยังเปิดไม่ได้ ⏳</h2>
-      <div id="envLocked" class="envelope tilt" aria-label="ซองที่ยังเปิดไม่ได้">
-        <div class="env-body"></div><div class="env-flap"></div><div class="letter-sheet"></div>
-      </div>
-
-      <div class="countdown">
-        <svg class="progress" viewBox="0 0 120 120" width="110" height="110" aria-hidden="true">
-          <circle class="track" cx="60" cy="60" r="48"></circle>
-          <circle class="bar" cx="60" cy="60" r="48" stroke-dasharray="301.59" stroke-dashoffset="301.59"></circle>
-        </svg>
-        <div>
-          <div id="lockedState" class="cd-text"><b>จะเปิดได้ก็ต่อเมื่อดวงดาวของเราทั้ง2จะโคจรมาเจอกัน</b></div>
-          <div id="cdDetail" class="cd-text" style="display:none"></div>
-        </div>
-      </div>
-
-      <div class="row-actions">
-        <button class="btn" id="btnOpenLocked">ลองเปิดดู</button>
-        <button class="btn ghost" id="btnAnim2">แสดง/ซ่อนแอนิเมชันซอง</button>
-      </div>
-
-      <div id="letter2" class="letter"></div>
-      <div class="hint">* กลับมาเมื่อไหร่เราจะเปิดให้เองนะ😉 *</div>
-    </section>
+    <div class="paper-body">
+      <!-- รูปหลายรูปจะถูกแสดงใน div นี้ -->
+      <div class="media" id="modalMedia" style="display:none"></div>
+      <!-- รูปเดี่ยว (ยังรองรับของเดิม) -->
+      <img class="img" id="modalImg" alt="" style="display:none"/>
+      <div class="content" id="modalContent"></div>
+      <div class="hint" id="modalHint"></div>
+    </div>
   </div>
+</div>
+
+<div class="toast" id="toast">ยังไม่ถึงเวลาที่จะเปิดนะครับ 💫</div>
 
 <script>
-/* =======================
-   🔧 CONFIG — แก้ค่าตรงนี้เท่านั้น
-   ======================= */
+/* ========= CONFIG =========
+   - ตั้งเวลาเปิดจดหมาย #2: unlockAtISO (ISO8601 +07:00)
+   - รูปเดียว: imageSrc
+   - หลายรูป: images = [{src, alt, caption}]
+   - ถ้ามี images จะถูกใช้แทน imageSrc
+   - DEV_PREVIEW: true = ทดสอบเปิดก่อนเวลา
+   - HIDE_OPEN_DATETIME / HIDE_COUNTDOWN: ซ่อนข้อความ/นับถอยหลัง
+=========================== */
 const CONFIG = {
-  OPEN_AT: "2025-12-31T21:30", // เวลาเปิด (ไม่แสดงต่อผู้ใช้)
-  LOCKED_TITLE: "เมื่อเราวนมาเจอกันอีกครั้ง 🌏💞",
-  LOCKED_CONTENT:
-`ขอบคุณที่อยู่ข้างๆ กันเสมอ
-ต่อให้โลกหมุนพาเราไกลแค่ไหน เราก็จะวนกลับมาหากัน
-ถึงเวลานั้น… มาเปิดจดหมายนี้พร้อมกันนะ 💫`,
-  LOCKED_IMAGES: [
-    // { src: "images/us-1.jpg", caption: "วันแรกที่เราเจอกัน 💞" },
-  ],
-  AUTO_OPEN: true
-};
-
-const prefersDark = matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
-const savedTheme = localStorage.getItem('theme');
-document.documentElement.setAttribute('data-theme', savedTheme || (prefersDark?'dark':'light'));
-
-let soundOn = (localStorage.getItem('sound')||'off')==='on';
-const $ = s => document.querySelector(s);
-
-const wrap = $('#wrap');
-const envOpen = $('#envOpen'), envLocked = $('#envLocked');
-const btnOpenNow = $('#btnOpenNow'), btnOpenLocked = $('#btnOpenLocked');
-const btnAnim1 = $('#btnAnim1'), btnAnim2 = $('#btnAnim2');
-const toggleTheme = $('#toggleTheme'), toggleSound = $('#toggleSound'), secretBtn = $('#secretBtn');
-
-const modal = $('#modal'), sheetTitle = $('#sheetTitle'), sheetBody = $('#sheetBody');
-const btnPrint = $('#btnPrint'), btnClose = $('#btnClose');
-const lightbox = $('#lightbox'), lightboxImg = lightbox.querySelector('img');
-
-toggleSound.classList.toggle('active', soundOn);
-toggleSound.textContent = `เสียง: ${soundOn ? 'เปิด' : 'ปิด'}`;
-
-// 💗 floating hearts (ลดจำนวนบนมือถือ)
-(function hearts(){
-  const coarse = matchMedia('(pointer:coarse)').matches;
-  const n = coarse ? 10 : 14;
-  for(let i=0;i<n;i++){
-    const h=document.createElement('div'); h.className='float-heart'; h.textContent='💗';
-    h.style.left = (Math.random()*100)+'vw';
-    h.style.fontSize = (18+Math.random()*26)+'px';
-    h.style.animationDelay = (Math.random()*-14)+'s';
-    document.body.appendChild(h);
-  }
-})();
-
-// 🎛️ ฟังก์ชันสเกลคอนเทนต์หลักให้พอดีจอ (ไม่ต้องเลื่อนหน้า)
-function fitMain(){
-  if(!wrap) return;
-  wrap.style.transform = 'scale(1)';
-  const rect = wrap.getBoundingClientRect();
-  const pad = 0;
-  const availW = window.innerWidth - pad;
-  const availH = window.innerHeight - pad;
-  const scale = Math.min(1, availW/rect.width, availH/rect.height);
-  wrap.style.transformOrigin = 'center center';
-  wrap.style.transform = `scale(${scale})`;
-}
-addEventListener('load', fitMain);
-addEventListener('resize', ()=>{ fitMain(); fitA4Text(); });
-addEventListener('orientationchange', ()=>{ setTimeout(()=>{ fitMain(); fitA4Text(); }, 150); });
-
-// Tilt (mouse + touch)
-function bindTilt(el){
-  let rect;
-  const maxX = 10, maxY = 8;
-  function update(clientX, clientY){
-    if(!rect) rect = el.getBoundingClientRect();
-    const x = (clientX - rect.left) / rect.width - .5;
-    const y = (clientY - rect.top) / rect.height - .5;
-    el.style.transform = `rotateX(${(-y*maxY).toFixed(2)}deg) rotateY(${(x*maxX).toFixed(2)}deg) translateY(-3px)`;
-  }
-  el.addEventListener('pointerenter', ()=> rect = el.getBoundingClientRect());
-  el.addEventListener('pointermove', e=>{
-    if (e.pointerType==='touch' && e.pressure===0) return;
-    update(e.clientX, e.clientY);
-  });
-  el.addEventListener('pointerdown', e=>{ el.setPointerCapture?.(e.pointerId); rect = el.getBoundingClientRect(); update(e.clientX, e.clientY); });
-  el.addEventListener('pointerup', ()=> el.style.transform = '');
-  el.addEventListener('pointerleave', ()=> el.style.transform = '');
-}
-bindTilt(envOpen); bindTilt(envLocked);
-
-// Typewriter
-function typewriter(el, text, speed=16, done){
-  el.innerHTML = '<div class="typed"></div>';
-  const target = el.querySelector('.typed');
-  const esc = s => s.replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  let i=0;
-  (function step(){
-    if(i<=text.length){
-      target.innerHTML = esc(text.slice(0,i)).replace(/\n/g,'<br>');
-      i++; setTimeout(step, speed);
-    } else { if (typeof done==='function') done(); }
-  })();
-}
-
-// Audio chime
-let audioCtx=null;
-function chime(){
-  if(!soundOn) return;
-  try{
-    audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)();
-    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
-    o.connect(g); g.connect(audioCtx.destination); o.type='triangle'; o.frequency.value=880;
-    g.gain.setValueAtTime(0.0001,audioCtx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.2,audioCtx.currentTime+0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.35);
-    o.start(); o.stop(audioCtx.currentTime+0.4);
-    if (navigator.vibrate) navigator.vibrate(20);
-  }catch{}
-}
-
-// Confetti (เบาลงบนมือถือ)
-const cvs = document.getElementById('confetti'), ctx = cvs.getContext('2d'); let parts=[];
-function resizeCanvas(){ cvs.width=innerWidth; cvs.height=innerHeight } addEventListener('resize',resizeCanvas); resizeCanvas();
-function blast(x=innerWidth/2,y=innerHeight/3,n=120){
-  const coarse = matchMedia('(pointer:coarse)').matches;
-  const count = coarse ? Math.floor(n*0.55) : n;
-  for(let i=0;i<count;i++){
-    parts.push({x,y,vx:(Math.random()-.5)*6,vy:(Math.random()-1.2)*8-4,g:.15+Math.random()*.25,s:4+Math.random()*6,a:1,hue:Math.floor(Math.random()*360)});
-  }
-}
-;(function loop(){ ctx.clearRect(0,0,cvs.width,cvs.height); parts=parts.filter(p=>p.a>0&&p.y<innerHeight+40);
-  for(const p of parts){ p.vx*=0.995; p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; p.a*=0.986; ctx.globalAlpha=Math.max(0,p.a); ctx.fillStyle=`hsl(${p.hue} 90% 60%)`; ctx.fillRect(p.x,p.y,p.s,p.s);} requestAnimationFrame(loop); })();
-
-// Lock body scroll when modal open (เรา lock หน้าอยู่แล้ว แต่เผื่อใช้ซ้ำ)
-function lockScroll(lock){ document.body.style.overflow = lock ? 'hidden' : 'hidden'; } // คง hidden ไว้เสมอ
-
-/* ===== A4 Popup: สร้าง content-wrap แล้ว scale ให้พอดีแผ่น ===== */
-function openA4(title, text, images){
-  sheetTitle.textContent = title || 'จดหมาย';
-  sheetBody.scrollTop = 0;
-  sheetBody.innerHTML = '';
-
-  // สร้างคอนเทนเนอร์ที่สามารถ scale ได้
-  const wrap = document.createElement('div');
-  wrap.className = 'content-wrap';
-  sheetBody.appendChild(wrap);
-
-  // เริ่มพิมพ์ทีละตัว
-  let fittingInterval = setInterval(fitA4Text, 120);
-  typewriter(wrap, (title?`📬 ${title}\n\n`:'') + (text||''), 16, ()=>{
-    // ถ้ามีรูป — ใส่ต่อท้าย
-    if (Array.isArray(images) && images.length){
-      const grid = document.createElement('div');
-      grid.className = 'a4-photos';
-      images.forEach(({src, caption=''})=>{
-        const fig = document.createElement('figure'); fig.style.margin='0';
-        const img = document.createElement('img'); img.loading='lazy'; img.decoding='async'; img.src=src; img.alt=caption||'';
-        const cap = document.createElement('figcaption'); cap.style.fontSize='13px'; cap.style.color='#6b6b6b'; cap.style.textAlign='center'; cap.style.marginTop='6px'; cap.textContent = caption||'';
-        img.addEventListener('click', ()=> openLightbox(src, caption||''));
-        fig.appendChild(img); if (caption) fig.appendChild(cap);
-        grid.appendChild(fig);
-      });
-      wrap.appendChild(grid);
-    }
-    clearInterval(fittingInterval);
-    fitA4Text(); // ฟิตอีกรอบหลังพิมพ์เสร็จ
-  });
-
-  document.getElementById('modal').classList.add('show');
-  document.getElementById('modal').setAttribute('aria-hidden','false');
-  lockScroll(true);
-}
-
-// ปรับขนาดเนื้อหาในแผ่นให้พอดีโดยไม่ต้องสกอลล์
-function fitA4Text(){
-  const wrap = sheetBody.querySelector('.content-wrap');
-  if(!wrap) return;
-  wrap.style.transform = 'scale(1)';
-  wrap.style.width = 'auto';
-  const h = wrap.scrollHeight;
-  const avail = sheetBody.clientHeight;
-  const scale = Math.min(1, avail / Math.max(1,h));
-  wrap.style.transform = `scale(${scale})`;
-  wrap.style.width = (100/scale)+'%'; // รักษาความกว้างหลัง scale
-}
-
-function closeA4(){
-  document.getElementById('modal').classList.remove('show');
-  document.getElementById('modal').setAttribute('aria-hidden','true');
-  lockScroll(false);
-}
-document.getElementById('btnClose').addEventListener('click', closeA4);
-document.getElementById('modal').addEventListener('click', (e)=>{ if (e.target === document.getElementById('modal')) closeA4(); });
-document.getElementById('btnPrint').addEventListener('click', ()=> window.print());
-
-// Lightbox
-let lbStartY=null;
-function openLightbox(src, alt){ lightboxImg.src = src; lightboxImg.alt = alt||''; document.getElementById('lightbox').classList.add('show'); document.getElementById('lightbox').setAttribute('aria-hidden','false'); }
-function closeLightbox(){ document.getElementById('lightbox').classList.remove('show'); document.getElementById('lightbox').setAttribute('aria-hidden','true'); setTimeout(()=> (lightboxImg.src=''), 200); }
-document.getElementById('lightbox').addEventListener('click', (e)=>{ if (e.target===document.getElementById('lightbox') || e.target.classList.contains('close')) closeLightbox(); });
-document.getElementById('lightbox').addEventListener('pointerdown', e=>{ lbStartY = e.clientY; });
-document.getElementById('lightbox').addEventListener('pointerup', e=>{ if (lbStartY!=null && e.clientY - lbStartY > 60) closeLightbox(); lbStartY=null; });
-addEventListener('keydown', (e)=>{ if (e.key==='Escape' && document.getElementById('lightbox').classList.contains('show')) closeLightbox(); });
-
-// Open-now -> A4
-const OPEN_TEXT =
-`💌 ขอบคุณช่วงเวลาดีๆที่มีให้เรามาตลอด7เดือนนะครับ
+  pageTitle: "ขอบคุณสำหรับ 7 เดือนนะครับ",
+  DEV_PREVIEW: false,
+  HIDE_OPEN_DATETIME: true,
+  HIDE_COUNTDOWN: true,
+  letter1: {
+    title: "จดหมายฉบับที่ 1",
+    imageSrc: "",
+    content: `💌 ขอบคุณช่วงเวลาดีๆที่มีให้เรามาตลอด7เดือนนะครับ
 รอบนี้อาจจะมาช้าไปหน่อยแล้วก็ไม่รู้ว่าเราจะได้ทำให้อีกเมื่อไหร่
 แต่ก็จะรอน้องกลับมาเปิดจดหมายอีกซองพร้อมๆกับเรานะครับ
 
@@ -449,92 +164,151 @@ const OPEN_TEXT =
 จาก โอ๊ค
 
 ป.ล. เราตั้งใจเขียนจดหมายทั้ง 2 ฉบับนี้มากๆ เลยนะครับ
-อยากให้น้องได้อ่านทั้ง 2 ฉบับ แต่ขอเก็บอีกฉบับไว้เปิดพร้อมกันกับน้องเพลงนะครับ 😉`;
+อยากให้น้องได้อ่านทั้ง 2 ฉบับ แต่ขอเก็บอีกฉบับไว้เปิดพร้อมกันกับน้องเพลงนะครับ 😉`
+  },
+  letter2: {
+    title: "จดหมายฉบับที่ 2",
+    unlockAtISO: "2025-12-01T20:00:00+07:00",
+    /* เลือกอย่างใดอย่างหนึ่ง:
+       1) รูปเดียว */
+    imageSrc: "",
+    /* 2) หลายรูป */
+    images: [
+      // ตัวอย่าง:
+      // { src: "images/us-2a.jpg", alt: "เราในวันพิเศษ", caption: "ค่ำคืนที่ (…)" },
+      // { src: "images/us-2b.jpg", alt: "โต๊ะอาหาร", caption: "มื้อที่ชอบที่สุดของเรา" }
+    ],
+    content: `(พื้นที่สำหรับจดหมายฉบับที่ 2)
+เขียนความในใจของโอ๊คถึงน้องเพลงไว้ที่นี่ได้เลย
+จะถูกเปิดอ่านพร้อมกันในวันที่ตั้งไว้ 💖`
+  }
+};
+/* ========================= */
 
-let anim1=false, anim2=false;
-btnAnim1.addEventListener('click', ()=>{ anim1=!anim1; envOpen.classList.toggle('open',anim1); fitMain(); });
-btnAnim2.addEventListener('click', ()=>{ anim2=!anim2; envLocked.classList.toggle('open',anim2); fitMain(); });
-btnOpenNow.addEventListener('click', ()=>{
-  envOpen.classList.add('open'); anim1=true;
-  blast(innerWidth/2, innerHeight*0.35, 180); chime();
-  openA4('จดหมายถึงน้องเพลง 💌', OPEN_TEXT, []);
+document.title = CONFIG.pageTitle || document.title;
+
+/* fix 100vh on mobile */
+const setVh = () => document.documentElement.style.setProperty('--vh', `${window.innerHeight*0.01}px`);
+setVh(); addEventListener('resize', setVh);
+
+/* Elements */
+const open1Btn = document.getElementById('open1');
+const open2Btn = document.getElementById('open2');
+const modal = document.getElementById('modal');
+const closeBtn = document.getElementById('close');
+const modalTitle = document.getElementById('modalTitle');
+const modalContent = document.getElementById('modalContent');
+const modalImg = document.getElementById('modalImg');
+const modalMedia = document.getElementById('modalMedia');
+const modalHint = document.getElementById('modalHint');
+const toast = document.getElementById('toast');
+
+/* Utils */
+function openModal({title, content, img, images, hint}){
+  modalTitle.textContent = title || "จดหมาย";
+  modalContent.textContent = content || "";
+  // แสดง “หลายรูป” ถ้ามี images
+  if (Array.isArray(images) && images.length > 0){
+    modalMedia.innerHTML = images.map(({src, alt, caption})=>{
+      const cap = caption ? `<div class="cap">${caption}</div>` : "";
+      const safeAlt = alt || "";
+      return `<figure><img src="${src}" alt="${safeAlt}">${cap}</figure>`;
+    }).join("");
+    modalMedia.style.display = "grid";
+    // layout 2 คอลัมน์อัตโนมัติเมื่อรูป >= 2
+    modalMedia.classList.toggle('grid2', images.length >= 2);
+    modalImg.style.display = "none";
+  }else{
+    // ไม่ได้ใช้หลายรูป -> ใช้รูปเดี่ยว (ถ้ามี)
+    modalMedia.style.display = "none";
+    modalMedia.innerHTML = "";
+    if (img){
+      modalImg.src = img; modalImg.style.display = "block";
+    }else{
+      modalImg.removeAttribute('src'); modalImg.style.display = "none";
+    }
+  }
+  modalHint.textContent = hint || "";
+  modal.classList.add('open');
+}
+function closeModal(){ modal.classList.remove('open'); }
+closeBtn.addEventListener('click', closeModal);
+modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+
+/* Letter 1 */
+open1Btn.addEventListener('click', ()=>{
+  openModal({
+    title: CONFIG.letter1.title,
+    content: CONFIG.letter1.content,
+    img: (CONFIG.letter1.imageSrc||"").trim() || null,
+    images: [], // ไม่ใช้
+    hint: "อ่านแล้วเก็บไว้ในใจนะ 💗"
+  });
 });
-envOpen.addEventListener('click', ()=> btnOpenNow.click());
 
-// Locked logic (ไม่แสดงเวลา)
-const target = new Date(CONFIG.OPEN_AT);
-const CIRC = 2*Math.PI*48;
-const bar = document.querySelector('.progress .bar');
-bar.setAttribute('stroke-dasharray', CIRC.toFixed(2));
-bar.setAttribute('stroke-dashoffset', CIRC.toFixed(2));
+/* Letter 2 Lock Logic */
+const unlockDate = new Date(CONFIG.letter2.unlockAtISO);
+const openAtEl   = document.getElementById('openAt');
+const openAtWrap = document.getElementById('openAtWrap');
+const countdownEl   = document.getElementById('countdown');
+const countdownWrap = document.getElementById('countdownWrap');
+const lockNote = document.getElementById('lockNote');
 
-function updateRing(){
-  if (isNaN(target)) return;
-  const now = new Date(); const diff = target-now;
-  if (diff<=0){
-    bar.setAttribute('stroke-dashoffset','0');
-    if (CONFIG.AUTO_OPEN) showLockedLetter(true);
-  } else {
-    if (!updateRing.start) updateRing.start = now.getTime();
-    const total = target.getTime() - updateRing.start;
-    const passed = now.getTime() - updateRing.start;
-    const ratio = Math.max(0, Math.min(1, passed/Math.max(1,total)));
-    bar.setAttribute('stroke-dashoffset', (CIRC*(1-ratio)).toFixed(2));
-    setTimeout(updateRing, 1000);
+function formatThaiDate(d){
+  try{ return d.toLocaleString('th-TH',{dateStyle:'full', timeStyle:'short', timeZone:'Asia/Bangkok'}); }
+  catch{ return d.toLocaleString(); }
+}
+
+/* ซ่อน/แสดง บรรทัดเวลา + นับถอยหลัง */
+if (CONFIG.HIDE_OPEN_DATETIME) openAtWrap?.style.setProperty('display','none');
+else openAtEl.textContent = formatThaiDate(unlockDate);
+if (CONFIG.HIDE_COUNTDOWN) countdownWrap?.style.setProperty('display','none');
+
+let unlocked = false;
+function updateCountdown(){
+  const now = new Date();
+  let diff = unlockDate - now;
+  if (CONFIG.DEV_PREVIEW) diff = -1;
+  if (diff <= 0){
+    unlocked = true;
+    lockNote.innerHTML = `<span class="ok">พร้อมเปิดแล้ว ✨</span>`;
+    if (!CONFIG.HIDE_COUNTDOWN && countdownEl){
+      countdownEl.innerHTML = `<span class="ok">พร้อมเปิดแล้ว ✨</span>`;
+    }
+    return;
+  }
+  if (!CONFIG.HIDE_COUNTDOWN && countdownEl){
+    const s = Math.floor(diff/1000)%60;
+    const m = Math.floor(diff/1000/60)%60;
+    const h = Math.floor(diff/1000/60/60)%24;
+    const d = Math.floor(diff/1000/60/60/24);
+    countdownEl.textContent = `${d} วัน ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
   }
 }
-updateRing();
+updateCountdown();
+setInterval(updateCountdown, 1000);
 
-let lockedShown = false;
-function showLockedLetter(fromAuto=false){
-  if (lockedShown) return;
-  lockedShown = true;
-  envLocked.classList.add('open'); anim2=true;
-  blast(innerWidth/2, innerHeight*0.25, 150); chime();
-  openA4(CONFIG.LOCKED_TITLE, CONFIG.LOCKED_CONTENT, CONFIG.LOCKED_IMAGES);
-  if (!fromAuto && navigator.vibrate) navigator.vibrate(20);
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(()=> toast.classList.remove('show'), 2000);
 }
-btnOpenLocked.addEventListener('click', ()=>{
-  if (isNaN(target)) return;
-  if (new Date()>=target){ showLockedLetter(false); }
-  else {
-    envLocked.classList.add('shake');
-    setTimeout(()=>envLocked.classList.remove('shake'),520);
-    const r=envLocked.getBoundingClientRect(); blast(r.left+r.width/2, r.top+20);
-    if (navigator.vibrate) navigator.vibrate([20,20,10]);
+
+open2Btn.addEventListener('click', ()=>{
+  if (!unlocked){
+    showToast('ยังให้เปิดไม่ได้นะ💫');
+    return;
   }
+  const imgs = Array.isArray(CONFIG.letter2.images) ? CONFIG.letter2.images : [];
+  openModal({
+    title: CONFIG.letter2.title,
+    content: CONFIG.letter2.content,
+    // ถ้ามี images จะถูกใช้แทน imageSrc
+    images: imgs.length ? imgs : [],
+    img: imgs.length ? null : ((CONFIG.letter2.imageSrc||"").trim() || null),
+    hint: "ดีใจที่ได้เปิดอ่านนะ 💞"
+  });
 });
-envLocked.addEventListener('click', ()=> btnOpenLocked.click());
-
-// Theme + sound
-toggleTheme.addEventListener('click', ()=>{
-  const cur=document.documentElement.getAttribute('data-theme'); const next=cur==='dark'?'light':'dark';
-  document.documentElement.setAttribute('data-theme',next); localStorage.setItem('theme', next);
-  toggleTheme.classList.toggle('active', next==='dark');
-  fitMain();
-});
-toggleTheme.classList.toggle('active', (savedTheme|| (prefersDark?'dark':'light'))==='dark');
-
-toggleSound.addEventListener('click', ()=>{
-  soundOn=!soundOn; toggleSound.classList.toggle('active', soundOn);
-  toggleSound.textContent=`เสียง: ${soundOn?'เปิด':'ปิด'}`; localStorage.setItem('sound', soundOn?'on':'off'); if (soundOn) chime();
-});
-
-// Secret hearts
-const code=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','KeyB','KeyA']; let pos=0;
-addEventListener('keydown', e=>{ pos = (e.code===code[pos]) ? pos+1 : 0; if (pos===code.length){ pos=0; stickerBurst(); }});
-secretBtn.addEventListener('click', stickerBurst);
-function stickerBurst(){
-  for(let i=0;i<20;i++){
-    const s=document.createElement('div'); s.textContent=['💖','💘','💝','💗','💞'][Math.floor(Math.random()*5)];
-    s.style.position='fixed'; s.style.left=(10+Math.random()*80)+'vw'; s.style.top='-10vh';
-    s.style.fontSize=(26+Math.random()*24)+'px'; s.style.transition='transform 2s ease, opacity 2s ease';
-    s.style.transform='translateY(0) rotate(0)'; s.style.opacity='1'; s.style.pointerEvents='none'; document.body.appendChild(s);
-    requestAnimationFrame(()=>{ s.style.transform=`translateY(${110+Math.random()*20}vh) rotate(${(Math.random()*720-360).toFixed(0)}deg)`; s.style.opacity='0'; });
-    setTimeout(()=> s.remove(), 2200);
-  }
-  blast(innerWidth/2, innerHeight*0.2, 220); chime();
-}
 </script>
 </body>
 </html>
